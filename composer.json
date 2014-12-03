@@ -1,0 +1,31 @@
+{
+    "name": "amf/webservices-client-bundle",
+    "description": "A bundle for consuming Rest and Soap webservices",
+    "type": "symfony-bundle",
+    "keywords": ["WebServices", "Client", "Rest", "Soap"],
+    "homepage": "https://github.com/fattouchsquall",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohamed Amine Fattouch",
+            "email": "amine.fattouch@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "~2.0",
+        "symfony/serializer": "~2.0",
+        "symfony/console": "~2.0"
+    },
+    "autoload": {
+        "psr-0" : { "AMF\\WebServicesClientBundle" : "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "AMF/WebServicesClientBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
