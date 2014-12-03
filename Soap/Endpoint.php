@@ -71,8 +71,8 @@ abstract class Endpoint extends \SoapClient
 
         if ($this->isSecure === true)
         {
-            $soapVarWSSEHeader = $this->buildSoapVarWSSEHeader();
-            $client->__setSoapHeaders($soapVarWSSEHeader);
+            $wsseHeader = $this->soapWsse->generateHeader();
+            $client->__setSoapHeaders($wsseHeader);
         }
         
         $response = $client->__soapCall($methodName, $arguments);

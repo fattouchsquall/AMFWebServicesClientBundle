@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
                 ->useAttributeAsKey('name')
                 ->prototype('array')
                     ->children()
+                        ->scalarNode('class')->defaultNull()->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('wsdl')->defaultNull()->isRequired()->cannotBeEmpty()->end()
                         ->arrayNode('options')
                             ->addDefaultsIfNotSet()
@@ -74,6 +75,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addRestEndpointSection(ArrayNodeDefinition $node)
     {       
+        $schemes = array('https', 'http');
+        
         $node->children()
                 ->arrayNode('rest_endpoints')
                 ->useAttributeAsKey('identifier')
@@ -85,7 +88,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue("http")
                             ->cannotBeEmpty()
                             ->validate()
-                            ->ifNotInArray(array('https', 'http'))
+                            ->ifNotInArray($schemes)
                                 ->thenInvalid('Invalid scheme "%s", there must be http or https')
                             ->end()
                         ->end()
