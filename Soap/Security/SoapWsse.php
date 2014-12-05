@@ -7,6 +7,7 @@
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
+
 namespace AMF\WebServicesClientBundle\Soap\Security;
 
 /**

@@ -5,7 +5,8 @@
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-namespace AMF\WebServicesClientBundle\SoapClient\Security;
+
+namespace AMF\WebServicesClientBundle\Soap\Security;
 
 /**
  * The soap token for wsse.

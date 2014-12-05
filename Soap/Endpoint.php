@@ -45,7 +45,7 @@ abstract class Endpoint extends \SoapClient
      * Constructor class.
      * 
      * @param string   $wsdl     The link for wsdl file (default null).
-     * @param SOAPWsse $soapWsse The handler of soap wsse (default null).
+     * @param SoapWsse $soapWsse The handler of soap wsse (default null).
      * @param array    $options  The options for soap client (default empty).
      * @param boolean  $isSecure Whethere the webservice is secured or not (default false).
      */

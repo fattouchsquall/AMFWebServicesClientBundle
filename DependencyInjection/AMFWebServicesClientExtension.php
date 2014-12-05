@@ -6,6 +6,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -41,19 +43,14 @@ class AMFWebServicesClientExtension extends Extension
         
         if (!empty($config['soap_endpoints']))
         {
-            $loader->load('soap_endpoints.yml');
+            $loader->load('soap_endpoint.yml');
+            $container->setParameter('amf_webservices_client.soap.endpoints', $config['soap_endpoints']);
             foreach ($config['soap_endpoints'] as $key => $value)
             {
                 if (($value['wsse']['enabled'] === true))
-                {
-                    $soapWsse = 'amf_webservices_client.soap.wsse.'.$key;
-                    $container
-                        ->setDefinition($soapWsse, new DefinitionDecorator('amf_webservices_client.soap.wsse'))
-                        ->replaceArgument(0, new Reference($value['username']))
-                        ->replaceArgument(1, new Reference($value['password']));
-                    
+                {   
                     $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_webservices_client.soap.$key.wsse.%s")); 
-                    unset($value);
+                    unset($value['wsse']);
                 }
                 
                 $this->remapParametersNamespaces($value, $container, array('' => "amf_webservices_client.soap.$key.%s"));
