@@ -7,7 +7,6 @@
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-
 namespace AMF\WebServicesClientBundle\Soap\Security;
 
 /**
@@ -17,7 +16,7 @@ namespace AMF\WebServicesClientBundle\Soap\Security;
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-class Wsse
+class SoapWsse
 {
     
     /**
@@ -61,11 +60,11 @@ class Wsse
                                                 $xsdNamespace, null, $xsdNamespace);
             $passwordSoapVar  = new \SoapVar($this->password, XSD_STRING, null,
                                                 $xsdNamespace, null, $xsdNamespace);
-            $wsseAuth         = new WsseAuth($usernameSoapVar, $passwordSoapVar);
-            $wsseAuthSoapVar  = new \SoapVar($wsseAuth, SOAP_ENC_OBJECT, null,
+            $soapWsseAuth     = new SoapWsseAuth($usernameSoapVar, $passwordSoapVar);
+            $wsseAuthSoapVar  = new \SoapVar($soapWsseAuth, SOAP_ENC_OBJECT, null,
                                                 $xsdNamespace, 'UsernameToken',
                                                 $xsdNamespace);
-            $wsseToken        = new WsseToken($wsseAuthSoapVar);
+            $wsseToken        = new SoapWsseToken($wsseAuthSoapVar);
             $wsseTokenSoapVar = new \SoapVar($wsseToken, SOAP_ENC_OBJECT,
                                                 null, $xsdNamespace,
                                                 'UsernameToken', $xsdNamespace);

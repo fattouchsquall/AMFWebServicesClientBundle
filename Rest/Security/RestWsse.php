@@ -7,7 +7,7 @@
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-namespace AMF\WebServicesClientBundle\Rest\Security;
+namespace AMF\WebServicesClientBundle\RestClient\Security;
 
 /**
  * Add security wsse layer to rest webservices.
@@ -16,7 +16,7 @@ namespace AMF\WebServicesClientBundle\Rest\Security;
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-class Wsse
+class RestWsse
 {
     /**
      * @var string
@@ -29,35 +29,47 @@ class Wsse
     protected $password;
     
     /**
-     * @var array
+     * @var integer
      */
-    protected $options;
+    protected $nonceLength;
+    
+    /**
+     * @var string
+     */
+    protected $nonceChars;
+    
+    /**
+     * @var boolean
+     */
+    protected $encodeAs64;
 
 
     /**
      * The constructor class.
      * 
-     * @param string $username The username of wsse security.
-     * @param string $password The password of wsse security.
-     * @param array  $options  Options to encode password. 
+     * @param string  $username    The username of wsse security.
+     * @param string  $password    The password of wsse security.
+     * @param integer $nonceLength The length of nonce.
+     * @param string  $nonceChars  The chars used in nonce.
+     * @param boolean $encodeAs64  Whether to encode password as 64. 
      */
-    public function __construct($username, $password, array $options=array())
+    public function __construct($username, $password, $nonceLength, $nonceChars, $encodeAs64)
     {
-        $this->username = $username;
-        $this->password = $password;
-        $this->options  = $options;
+        $this->username    = $username;
+        $this->password    = $password;
+        $this->nonceLength = $nonceLength;
+        $this->nonceLChars = $nonceChars;
+        $this->encodeAs64  = $encodeAs64;
     }
  
     /**
-     * Generates header for wsse security.
-     * 
-     * @throws Exception If the username or password are not provided.
+     * Generates wsse header for authentification.
      * 
      * @return array
      */
-    public function generateHeader()
+    public function generateWSSEHeader()
     {
-        $header = array();
+        $wsseHeader = array();
         if (isset($this->password) && isset($this->username))
         {
             $now     = new \DateTime('now'); 
@@ -66,15 +78,13 @@ class Wsse
             $nonce  = $this->generateNonce();
             $digest = $this->generatePasswordDigest($nonce, $created);
 
-            $header['HTTP_AUTHORISATION'] = 'WSSE profile="UsernameToken"';
-            $header['HTTP_X-WSSE']        = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+            $wsseHeader['HTTP_AUTHORISATION'] = 'WSSE profile="UsernameToken"';
+            $wsseHeader['HTTP_X-WSSE']        = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
                         $this->username, $digest, base64_encode($nonce), $created
             );
-            
-            return $header;
         }
         
-        throw new \Exception('Username and password must be provided');
+        return $wsseHeader;
     }
     
     /**
@@ -85,9 +95,9 @@ class Wsse
     protected function generateNonce()
     {
         $nonce = "";
-        for ($i = 0; $i < $this->options['nonce_length']; $i++)
+        for ($i = 0; $i < $this->nonceLength; $i++)
         {
-            $nonce += substr($this->options['nonce_chars'], floor(rand() * strlen($this->options['nonce_chars'])));
+            $nonce += substr($this->nonceChars, floor(rand() * strlen($this->nonceChars)));
         }
         
         return $nonce;
@@ -105,7 +115,7 @@ class Wsse
     {
         $passwordDigest = sha1($nonce . $created . $this->password, true);
         
-        if ($this->options['encode_as_64'] === true)
+        if ($this->encodeAs64 === true)
         {
             $passwordDigest = base64_encode($passwordDigest);
         }

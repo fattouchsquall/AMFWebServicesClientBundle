@@ -15,7 +15,7 @@ namespace AMF\WebServicesClientBundle\Soap\Security;
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-class WsseAuth
+class SoapWsseAuth
 {
     
     /**

@@ -1,42 +1,9 @@
 parameters:
-    amf_webservices_client.rest_request.listener.class: AMF\WebServicesClientBundle\Rest\EventListener\RequestListener
-    
-    amf_webservices_client.rest.decoder.json.class: AMF\WebServicesClientBundle\Rest\Decoder\JsonDecoder
-    amf_webservices_client.rest.decoder.xml.class: AMF\WebServicesClientBundle\Rest\Decoder\XmlDecoder
-    amf_webservices_client.rest.decoder_provider.class: AMF\WebServicesClientBundle\Rest\Decoder\DecoderProvider
-    
-    amf_webservices_client.rest.encoder.json.class: AMF\WebServicesClientBundle\Rest\Encoder\JsonEncoder
-    amf_webservices_client.rest.encoder.xml.class: AMF\WebServicesClientBundle\Rest\Encoder\XmlEncoder
-    amf_webservices_client.rest.encoder_provider.class: AMF\WebServicesClientBundle\Rest\Encoder\EncoderProvider
+    amf_webservices_client.rest_request.listener.class: AMF\WebServicesClientBundle\Rest\EventListener\RestRequestListener
 
 services:
-    amf_webservices_client.rest.decoder.json:
-        class: %amf_webservices_client.rest.decoder.json.class%
-        
-    amf_webservices_client.rest.decoder.xml:
-        class: %amf_webservices_client.rest.decoder.xml.class%
-    
-    amf_webservices_client.rest.decoder_provider:
-        class: %amf_webservices_client.rest.decoder_provider.class%
-        arguments: [%amf_webservices_client.rest.decoders%]
-        calls:
-            - [setContainer, ["@service_container"]]
-            
-    amf_webservices_client.rest.encoder.json:
-        class: %amf_webservices_client.rest.encoder.json.class%
-        
-    amf_webservices_client.rest.encoder.xml:
-        class: %amf_webservices_client.rest.encoder.xml.class%
-        
-    amf_webservices_client.rest.encoder_provider:
-        class: %amf_webservices_client.rest.encoder_provider.class%
-        arguments: [%amf_webservices_client.rest.encoders%]
-        calls:
-            - [setContainer, ["@service_container"]]
-            
     amf_webservices_client.rest_request.listener:
         class: %amf_webservices_client.rest_request.listener.class%
-        arguments: ["@amf_webservices_client.rest.encoder_provider", "@amf_webservices_client.rest.decoder_provider", %amf_webservices_client.rest.options%]
         tags:
             - { name: kernel.event_listener, event: amf_webservices_client.rest.request.http_get, method: onGetRequest }
             - { name: kernel.event_listener, event: amf_webservices_client.rest.request.http_post, method: onPostRequest }

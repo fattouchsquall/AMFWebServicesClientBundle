@@ -1,22 +1,22 @@
 <?php
 
 /**
- * The endpoint of rest webservice.
+ * This class represents a ReST Request.
  * 
  * @package AMFWebServicesClientBundle
- * @subpackage Security
+ * @subpackage Component
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 
-namespace AMF\WebServicesClientBundle\Rest;
+namespace AMF\WebServicesClientBundle\Rest\Component;
 
 /**
- * The endpoint of rest webservice.
+ * This class represents a ReST Request.
  * 
  * @package AMFWebServicesClientBundle
- * @subpackage Security
+ * @subpackage Component
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-abstract class Endpoint
+class RestRequest
 {
 }

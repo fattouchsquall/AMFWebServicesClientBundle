@@ -1,0 +1,9 @@
+parameters:
+    amf_webservices_client.rest.url.class: AMF\WebServicesClientBundle\Rest\Component\RESTUrl
+    amf_webservices_client.rest.security.class: AMF\WebServicesClientBundle\Rest\Security\RESTSecurity
+    amf_webservices_client.rest.endpoint.class: AMF\WebServicesClientBundle\Rest\Endpoint
+        
+services:    
+    amf_webservices_client.rest.endpoint:
+        class: %amf_webservices_client.rest.endpoint.class%
+        abstract: true

@@ -17,7 +17,7 @@ namespace AMF\WebServicesClientBundle\Rest\Constant;
  * @subpackage Constants
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-final class Methods
+final class RESTMethods
 {
     const HTTP_GET = "GET";
     

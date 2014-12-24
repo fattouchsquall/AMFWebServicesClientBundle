@@ -24,45 +24,41 @@ class Configuration implements ConfigurationInterface
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
-        $this->addSoapSection($rootNode);
-        $this->addRestSection($rootNode);
+        $this->addSoapEndpointSection($rootNode);
+        $this->addRestEndpointSection($rootNode);
         return $treeBuilder;
     }
     
     /**
-     * Adds the config of soap to global config.
+     * Adds the config of soap webservice to global config.
      * 
      * @param ArrayNodeDefinition $node The root element for the config nodes.
      * 
      * @return void
      */
-    protected function addSoapSection(ArrayNodeDefinition $node)
+    protected function addSoapEndpointSection(ArrayNodeDefinition $node)
     {
         $node->children()
-                ->arrayNode('soap')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('endpoints')
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('class')->defaultNull()->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('wsdl')->defaultNull()->isRequired()->cannotBeEmpty()->end()
-                            ->arrayNode('options')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->booleanNode('trace')->defaultTrue()->end()
-                                    ->booleanNode('exceptions')->defaultTrue()->end()
-                                    ->scalarNode("encoding")->defaultValue("UTF-8")->end()
-                                ->end()
+                ->arrayNode('soap_endpoints')
+                ->useAttributeAsKey('name')
+                ->prototype('array')
+                    ->children()
+                        ->scalarNode('class')->defaultNull()->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('wsdl')->defaultNull()->isRequired()->cannotBeEmpty()->end()
+                        ->arrayNode('options')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->booleanNode('trace')->defaultTrue()->end()
+                                ->booleanNode('exceptions')->defaultTrue()->end()
+                                ->scalarNode("encoding")->defaultValue("UTF-8")->end()
                             ->end()
-                            ->arrayNode('wsse')
-                                ->addDefaultsIfNotSet()
-                                ->canBeEnabled()
-                                ->children()
-                                    ->scalarNode('username')->defaultNull()->end()
-                                    ->scalarNode('password')->defaultNull()->end()
-                                ->end()
+                        ->end()
+                        ->arrayNode('wsse')
+                            ->addDefaultsIfNotSet()
+                            ->canBeEnabled()
+                            ->children()
+                                ->scalarNode('username')->defaultNull()->end()
+                                ->scalarNode('password')->defaultNull()->end()
                             ->end()
                         ->end()
                     ->end()
@@ -71,85 +67,42 @@ class Configuration implements ConfigurationInterface
     }
     
     /**
-     * Adds the config of rest to global config.
+     * Adds the config of rest webservice to global config.
      * 
      * @param ArrayNodeDefinition $node The root node of the config for this bundle.
      * 
      * @return void
      */
-    private function addRestSection(ArrayNodeDefinition $node)
+    private function addRestEndpointSection(ArrayNodeDefinition $node)
     {       
-        $schemes    = array('https', 'http');
-        $delimiters = array('/', '?');
+        $schemes = array('https', 'http');
         
         $node->children()
-                ->arrayNode('rest')
+                ->arrayNode('rest_endpoints')
+                ->useAttributeAsKey('identifier')
                 ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('decoders')
-                        ->useAttributeAsKey('name')
-                        ->defaultValue(array('json' => 'amf_webservices_client.rest.decoder.json', 'xml' => 'amf_webservices_client.rest.decoder.xml'))
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('encoders')
-                        ->useAttributeAsKey('name')
-                        ->defaultValue(array('json' => 'amf_webservices_client.rest.encoder.json', 'xml' => 'amf_webservices_client.rest.encoder.xml'))
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('options')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->booleanNode('return_transfer')->defaultTrue()->end()
-                            ->integerNode('timeout')->defaultValue(30)->end()
-                            ->booleanNode("ssl_verifypeer")->defaultFalse()->end()
-                            ->booleanNode("ssl_verifyhost")->defaultFalse()->end()
+                ->prototype('array')
+                    ->children()
+                        ->scalarNode('hostname')->defaultNull()->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('scheme')
+                            ->defaultValue("http")
+                            ->cannotBeEmpty()
+                            ->validate()
+                            ->ifNotInArray($schemes)
+                                ->thenInvalid('Invalid scheme "%s", there must be http or https')
+                            ->end()
                         ->end()
-                    ->end()
-                    ->arrayNode('endpoints')
-                    ->useAttributeAsKey('identifier')
-                    ->prototype('array')
-                        ->children()
-                            ->arrayNode('url')
-                                ->addDefaultsIfNotSet()
-                                ->canBeEnabled()
-                                ->children()
-                                    ->scalarNode('hostname')->defaultNull()->isRequired()->cannotBeEmpty()->end()
-                                    ->scalarNode('scheme')
-                                        ->defaultValue("http")
-                                        ->cannotBeEmpty()
-                                        ->validate()
-                                        ->ifNotInArray($schemes)
-                                            ->thenInvalid('Invalid scheme: "%s", there must be http or https')
-                                        ->end()
-                                    ->end()
-                                    ->integerNode('port')->defaultValue(80)->min(0)->end()
-                                    ->scalarNode('query_delimiter')
-                                        ->defaultValue("?")
-                                        ->cannotBeEmpty()
-                                        ->validate()
-                                        ->ifNotInArray($delimiters)
-                                            ->thenInvalid('Invalid query separator: "%s", there must be ? or /')
-                                        ->end()
-                                    ->end()
-                                ->end()
+                        ->integerNode('port')->defaultValue(80)->min(0)->end()
+                        ->arrayNode('wsse')
+                            ->addDefaultsIfNotSet()
+                            ->canBeEnabled()
+                            ->children()
+                                ->integerNode('nonce_length')->defaultValue(8)->min(1)->end()
+                                ->scalarNode('nonce_chars')->defaultValue('0123456789abcdef')->end()
+                                ->integerNode('encode_as_64')->defaultTrue->end()
+                                ->scalarNode('username')->defaultNull()->end()
+                                ->scalarNode('password')->defaultNull()->end()
                             ->end()
-                            ->arrayNode('wsse')
-                                ->addDefaultsIfNotSet()
-                                ->canBeEnabled()
-                                ->children()
-                                    ->scalarNode('username')->defaultNull()->end()
-                                    ->scalarNode('password')->defaultNull()->end()
-                                    ->arrayNode('options')
-                                        ->addDefaultsIfNotSet()
-                                        ->children()
-                                            ->integerNode('nonce_length')->defaultValue(8)->min(1)->isRequired()->cannotBeEmpty()->end()
-                                            ->scalarNode('nonce_chars')->defaultValue('0123456789abcdef')->end()
-                                            ->booleanNode('encode_as_64')->defaultTrue()->end()
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                            ->scalarNode('class')->defaultNull()->isRequired()->cannotBeEmpty()->end()
                         ->end()
                     ->end()
                 ->end()
