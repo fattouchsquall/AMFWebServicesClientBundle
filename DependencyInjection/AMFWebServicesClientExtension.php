@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -24,48 +25,81 @@ class AMFWebServicesClientExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
-//        if (!empty($config['rest_endpoints']))
-//        {
-//            $loader->load('rest_listeners.yml');
-//            $loader->load('rest_endpoints.yml');
-//            foreach ($config['rest_endpoints'] as $key => $value)
-//            {
-//                if (!empty($value['wsse']))
-//                {
-//                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_webservices_client.rest.$key.wsse.%s")); 
-//                    unset($value);
-//                }
-//                $this->remapParametersNamespaces($value, $container, array('' => "amf_webservices_client.rest.$key.%s"));
-//            }
-//        }
-        
-        if (!empty($config['soap_endpoints']))
+        $this->registerRestConfiguration($loader, $config, $container);
+        $this->registerSoapConfiguration($loader, $config, $container);
+    }
+    
+    /**
+     * Loads Soap config.
+     * 
+     * @param LoaderInterface  $loader    The loader of file.
+     * @param array            $config    The gloabl config of this bundle.
+     * @param ContainerBuilder $container The container for dependency injection.
+     * 
+     * @return void
+     */
+    protected function registerSoapConfiguration(LoaderInterface $loader, array $config, ContainerBuilder $container)
+    {
+        if (!empty($config['soap']))
         {
-            $loader->load('soap_endpoints.yml');
-            foreach ($config['soap_endpoints'] as $key => $value)
+            $loader->load('soap.yml');
+            $container->setParameter('amf_webservices_client.soap.endpoints', $config['soap']['endpoints']);
+            foreach ($config['soap']['endpoints'] as $key => $value)
             {
-                if (($value['wsse']['enabled'] === true))
-                {
-                    $soapWsse = 'amf_webservices_client.soap.wsse.'.$key;
-                    $container
-                        ->setDefinition($soapWsse, new DefinitionDecorator('amf_webservices_client.soap.wsse'))
-                        ->replaceArgument(0, new Reference($value['username']))
-                        ->replaceArgument(1, new Reference($value['password']));
-                    
+                if ($value['wsse']['enabled'] === true)
+                {   
                     $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_webservices_client.soap.$key.wsse.%s")); 
-                    unset($value);
+                    unset($value['wsse']);
                 }
                 
                 $this->remapParametersNamespaces($value, $container, array('' => "amf_webservices_client.soap.$key.%s"));
             }
         }
-        
     }
     
     /**
+     * Loads ReST config.
+     * 
+     * @param LoaderInterface  $loader    The loader of file.
+     * @param array            $config    The gloabl config of this bundle.
+     * @param ContainerBuilder $container The container for dependency injection.
+     * 
+     * @return void
+     */
+    protected function registerRestConfiguration(LoaderInterface $loader, array $config, ContainerBuilder $container)
+    {
+        if (!empty($config['rest']))
+        {
+            $loader->load('rest_listeners.yml');
+            $loader->load('rest.yml');
+            $container->setParameter('amf_webservices_client.rest.endpoints', $config['rest']['endpoints']);
+            foreach ($config['rest']['endpoints'] as $key => $value)
+            {
+                if ($value['wsse']['enabled'] === true)
+                {
+                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_webservices_client.rest.$key.wsse.%s")); 
+                    unset($value['wsse']);
+                }
+                if ($value['url']['enabled'] === true)
+                {
+                    $this->remapParametersNamespaces($value, $container, array('url' => "amf_webservices_client.rest.$key.url.%s")); 
+                    unset($value['url']);
+                }
+                
+                $this->remapParametersNamespaces($value, $container, array('' => "amf_webservices_client.rest.$key.%s"));
+            }
+            
+            $container->setParameter('amf_webservices_client.rest.decoders', $config['rest']['decoders']);
+            $container->setParameter('amf_webservices_client.rest.encoders', $config['rest']['encoders']);
+            $container->setParameter('amf_webservices_client.rest.options', $config['rest']['options']);
+        }
+    }
+
+
+    /**
      * Maps parameters to add them in container.
      * 
-     * @param array            $config     The gloabl config of the security bundle.
+     * @param array            $config     The gloabl config of this bundle.
      * @param ContainerBuilder $container  The container for dependency injection.
      * @param array            $namespaces Config namespaces to add as parameters in the container.
      * 
