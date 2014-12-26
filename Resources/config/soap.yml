@@ -1,5 +1,5 @@
 parameters:
-    amf_webservices_client.soap.wsse.class: AMF\WebServicesClientBundle\Soap\Security\SoapWsse     
+    amf_webservices_client.soap.wsse.class: AMF\WebServicesClientBundle\Soap\Security\Wsse     
     amf_webservices_client.soap.endpoint.class : AMF\WebServicesClientBundle\Soap\Endpoint
         
 services:

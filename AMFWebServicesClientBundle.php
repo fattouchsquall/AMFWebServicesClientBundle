@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use AMF\WebServicesClientBundle\DependencyInjection\Compiler\RegisterSoapWebServicesPass;
+use AMF\WebServicesClientBundle\DependencyInjection\Compiler\RegisterRestWebServicesPass;
 
 /**
  * The main class of the bundle.
@@ -35,7 +36,9 @@ class AMFWebServicesClientBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
+        
         $container->addCompilerPass(new RegisterSoapWebServicesPass());
+        $container->addCompilerPass(new RegisterRestWebServicesPass());
     }
 
 }
