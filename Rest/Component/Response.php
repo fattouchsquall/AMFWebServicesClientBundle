@@ -64,6 +64,28 @@ class Response
     }
     
     /**
+     * The setter for response format.
+     *
+     * @param string $format The response format.
+     *
+     * @void
+     */
+    public function setResponseFormat($format='json')
+    {
+        $this->format = $format;
+    }
+    
+    /**
+     * The getter the response format.
+     *
+     * @return string The response format.
+     */
+    public function getResponseFormat()
+    {
+        return $this->format;
+    }
+    
+    /**
      * Tests whether the response is a valid json or not.
      * 
      * @return boolean

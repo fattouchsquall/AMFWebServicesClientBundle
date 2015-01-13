@@ -26,6 +26,7 @@ class XmlDecoder implements DecoderInterface
      */
     private $encoder;
 
+    
     /**
      * The constructor class.
      */
@@ -37,7 +38,7 @@ class XmlDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, array $context = array())
+    public function decode($data, array $context=array())
     {
         try
         {

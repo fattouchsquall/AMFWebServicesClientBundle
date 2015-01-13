@@ -19,6 +19,7 @@ namespace AMF\WebServicesClientBundle\Rest\Decoder;
  */
 interface DecoderProviderInterface
 {
+    
     /**
      * The getter for the decoder.
      *

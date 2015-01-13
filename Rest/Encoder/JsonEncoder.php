@@ -27,6 +27,7 @@ class JsonEncoder implements EncoderInterface
      */
     protected $encoder;
     
+    
     /**
      * The constructor class.
      */

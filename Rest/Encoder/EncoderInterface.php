@@ -24,9 +24,9 @@ interface EncoderInterface
      * Encodes a string into array.
      *
      * @param string $data    The data to encode.
-     * @param array  $context The context of encoding.
+     * @param array  $context The context of encoding (default empty).
      * 
      * @return array
      */
-    function encode($data, array $context = array());
+    function encode($data, array $context=array());
 }

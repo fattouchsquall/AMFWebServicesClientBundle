@@ -40,4 +40,4 @@ class WsseAuth
         $this->Username = $username;
         $this->Password = $password;
     }
-} 
+}

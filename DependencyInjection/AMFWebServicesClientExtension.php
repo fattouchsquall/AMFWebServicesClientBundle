@@ -70,7 +70,7 @@ class AMFWebServicesClientExtension extends Extension
     {
         if (!empty($config['rest']))
         {
-            $loader->load('rest_listeners.yml');
+            $loader->load('listeners.yml');
             $loader->load('rest.yml');
             $container->setParameter('amf_webservices_client.rest.endpoints', $config['rest']['endpoints']);
             foreach ($config['rest']['endpoints'] as $key => $value)
@@ -91,7 +91,7 @@ class AMFWebServicesClientExtension extends Extension
             
             $container->setParameter('amf_webservices_client.rest.decoders', $config['rest']['decoders']);
             $container->setParameter('amf_webservices_client.rest.encoders', $config['rest']['encoders']);
-            $container->setParameter('amf_webservices_client.rest.options', $config['rest']['options']);
+            $container->setParameter('amf_webservices_client.rest.curl_options', $config['rest']['curl_options']);
         }
     }
 

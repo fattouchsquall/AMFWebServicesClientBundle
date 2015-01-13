@@ -80,4 +80,4 @@ class Wsse
         
         throw new \Exception('Username and password cannot be empty');
     }
-} 
+}

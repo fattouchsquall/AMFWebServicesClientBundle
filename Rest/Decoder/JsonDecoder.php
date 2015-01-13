@@ -10,7 +10,7 @@
 
 namespace AMF\WebServicesClientBundle\Rest\Decoder;
 
-use AMF\WebServicesClientBundle\Rest\Decoder\JsonDecoder as BaseJsonDecoder;
+use Symfony\Component\Serializer\Encoder\JsonDecode as BaseJsonDecoder;
 
 /**
  * This class decodes json data.
@@ -39,7 +39,7 @@ class JsonDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, $context)
+    public function decode($data, array $context=array())
     {
         return $this->decoder->decode($data, 'json', $context);
     }

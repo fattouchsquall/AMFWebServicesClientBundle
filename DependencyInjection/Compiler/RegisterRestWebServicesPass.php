@@ -77,9 +77,10 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
             $container->setDefinition($restEndpoint,
                             new DefinitionDecorator('amf_webservices_client.rest.endpoint'))
                     ->setClass($value['class'])
-                    ->replaceArgument(1, $restUrlReference)
-                    ->replaceArgument(2, $restWsseReference)
-                    ->replaceArgument(3, $value['wsse']['enabled']);
+                    ->replaceArgument(3, $restUrlReference)
+                    ->replaceArgument(4, $restWsseReference)
+                    ->replaceArgument(5, $value['request_format'])
+                    ->replaceArgument(6, $value['response_format']);
         }
     }
 }

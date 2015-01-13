@@ -25,6 +25,7 @@ class XmlEncoder implements EncoderInterface
      */
     protected $encoder;
 
+    
     /**
      * The constructor class.
      */
@@ -36,7 +37,7 @@ class XmlEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function encode($data, array $context = array())
+    public function encode($data, array $context=array())
     {
         return $this->encoder->encode($data, 'xml', $context);
     }

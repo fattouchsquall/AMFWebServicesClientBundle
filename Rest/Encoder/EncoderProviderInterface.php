@@ -19,6 +19,7 @@ namespace AMF\WebServicesClientBundle\Rest\Encoder;
  */
 interface EncoderProviderInterface
 {
+    
     /**
      * The getter for the encoder.
      *

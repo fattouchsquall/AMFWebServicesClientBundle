@@ -112,4 +112,4 @@ class Wsse
         
         return $passwordDigest;
     }
-} 
+}
