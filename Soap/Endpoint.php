@@ -8,7 +8,7 @@
 
 namespace AMF\WebServicesClientBundle\Soap;
 
-use AMF\WebServicesClientBundle\Soap\Security\SoapWsse;
+use AMF\WebServicesClientBundle\Soap\Security\Wsse;
 
 /**
  * This class manages the interaction with a SOAP webservice.
@@ -26,9 +26,9 @@ abstract class Endpoint extends \SoapClient
     protected $wsdl;
 
     /**
-     * @var SOAPWsse
+     * @var Wsse
      */
-    protected $soapWsse;
+    protected $wsse;
     
     /**
      * @var array
@@ -44,15 +44,15 @@ abstract class Endpoint extends \SoapClient
     /**
      * Constructor class.
      * 
-     * @param string   $wsdl     The link for wsdl file (default null).
-     * @param SOAPWsse $soapWsse The handler of soap wsse (default null).
-     * @param array    $options  The options for soap client (default empty).
-     * @param boolean  $isSecure Whethere the webservice is secured or not (default false).
+     * @param string  $wsdl     The link for wsdl file (default null).
+     * @param Wsse    $wsse     The handler of soap wsse (default null).
+     * @param array   $options  The options for soap client (default empty).
+     * @param boolean $isSecure Whethere the webservice is secured or not (default false).
      */
-    public function __construct($wsdl=null, SoapWsse $soapWsse=null, array $options=array(), $isSecure=false)
+    public function __construct($wsdl=null, Wsse $wsse=null, array $options=array(), $isSecure=false)
     {
         $this->wsdl     = $wsdl;
-        $this->soapWsse = $soapWsse;
+        $this->wsse     = $wsse;
         $this->options  = $options;
         $this->isSecure = $isSecure;
     }
@@ -71,7 +71,7 @@ abstract class Endpoint extends \SoapClient
 
         if ($this->isSecure === true)
         {
-            $wsseHeader = $this->soapWsse->generateHeader();
+            $wsseHeader = $this->wsse->generateHeader();
             $client->__setSoapHeaders($wsseHeader);
         }
         
