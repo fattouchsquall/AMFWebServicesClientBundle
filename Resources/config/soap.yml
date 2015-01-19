@@ -1,14 +1,14 @@
 parameters:
-    amf_webservices_client.soap.wsse.class: AMF\WebServicesClientBundle\Soap\Security\Wsse     
-    amf_webservices_client.soap.endpoint.class : AMF\WebServicesClientBundle\Soap\Endpoint
+    amf_web_services_client.soap.wsse.class: AMF\WebServicesClientBundle\Soap\Security\Wsse     
+    amf_web_services_client.soap.endpoint.class : AMF\WebServicesClientBundle\Soap\Endpoint
         
 services:
-    amf_webservices_client.soap.wsse:
-        class: %amf_webservices_client.soap.wsse.class%
+    amf_web_services_client.soap.wsse:
+        class: %amf_web_services_client.soap.wsse.class%
         arguments: ["", ""]
         
-    amf_webservices_client.soap.endpoint:
-        class: %amf_webservices_client.soap.endpoint.class%
+    amf_web_services_client.soap.endpoint:
+        class: %amf_web_services_client.soap.endpoint.class%
         abstract: true
         arguments: [~, ~, ~, ~]
         

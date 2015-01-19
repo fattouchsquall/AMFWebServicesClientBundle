@@ -1,0 +1,21 @@
+parameters:
+    amf_web_services_client.rest.http_listener.class: AMF\WebServicesClientBundle\Rest\EventListener\HttpListener
+    
+    amf_web_services_client.rest.decoder.json.class: AMF\WebServicesClientBundle\Rest\Decoder\JsonDecoder
+    amf_web_services_client.rest.decoder.xml.class: AMF\WebServicesClientBundle\Rest\Decoder\XmlDecoder
+    amf_web_services_client.rest.decoder_provider.class: AMF\WebServicesClientBundle\Rest\Decoder\DecoderProvider
+    
+    amf_web_services_client.rest.encoder.json.class: AMF\WebServicesClientBundle\Rest\Encoder\JsonEncoder
+    amf_web_services_client.rest.encoder.xml.class: AMF\WebServicesClientBundle\Rest\Encoder\XmlEncoder
+    amf_web_services_client.rest.encoder_provider.class: AMF\WebServicesClientBundle\Rest\Encoder\EncoderProvider
+
+services:   
+    amf_web_services_client.rest.http_listener:
+        class: %amf_web_services_client.rest.http_listener.class%
+        arguments: [%amf_web_services_client.rest.curl_options%]
+        tags:
+            - { name: kernel.event_listener, event: amf_web_services_client.rest.request.http_get, method: onGetRequest }
+            - { name: kernel.event_listener, event: amf_web_services_client.rest.request.http_post, method: onPostRequest }
+            - { name: kernel.event_listener, event: amf_web_services_client.rest.request.http_put, method: onPutRequest }
+            - { name: kernel.event_listener, event: amf_web_services_client.rest.request.http_delete, method: onDeleteRequest }
+        

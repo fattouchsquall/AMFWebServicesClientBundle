@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('amf_webservices_client');
+        $rootNode = $treeBuilder->root('amf_web_services_client');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
@@ -88,12 +88,12 @@ class Configuration implements ConfigurationInterface
                 ->children()
                     ->arrayNode('decoders')
                         ->useAttributeAsKey('name')
-                        ->defaultValue(array('json' => 'amf_webservices_client.rest.decoder.json', 'xml' => 'amf_webservices_client.rest.decoder.xml'))
+                        ->defaultValue(array('json' => 'amf_web_services_client.rest.decoder.json', 'xml' => 'amf_web_services_client.rest.decoder.xml'))
                         ->prototype('scalar')->end()
                     ->end()
                     ->arrayNode('encoders')
                         ->useAttributeAsKey('name')
-                        ->defaultValue(array('json' => 'amf_webservices_client.rest.encoder.json', 'xml' => 'amf_webservices_client.rest.encoder.xml'))
+                        ->defaultValue(array('json' => 'amf_web_services_client.rest.encoder.json', 'xml' => 'amf_web_services_client.rest.encoder.xml'))
                         ->prototype('scalar')->end()
                     ->end()
                     ->arrayNode('curl_options')

@@ -34,12 +34,12 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasParameter('amf_webservices_client.rest.endpoints') === false)
+        if ($container->hasParameter('amf_web_services_client.rest.endpoints') === false)
         {
             return;
         }
 
-        $endpoints = $container->getParameter('amf_webservices_client.rest.endpoints');
+        $endpoints = $container->getParameter('amf_web_services_client.rest.endpoints');
         foreach ($endpoints as $key => $value)
         {
             $restWsseReference = null;
@@ -47,10 +47,10 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
             if (($value['wsse']['enabled'] === true))
             {
 
-                $restWsse = 'amf_webservices_client.rest.wsse.' . $key;
+                $restWsse = 'amf_web_services_client.rest.wsse.' . $key;
                 $container
                         ->setDefinition($restWsse,
-                                new DefinitionDecorator('amf_webservices_client.rest.wsse'))
+                                new DefinitionDecorator('amf_web_services_client.rest.wsse'))
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password'])
                         ->replaceArgument(2, $value['wsse']['options']);
@@ -61,10 +61,10 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
             if (($value['url']['enabled'] === true))
             {
 
-                $restUrl = 'amf_webservices_client.rest.url.' . $key;
+                $restUrl = 'amf_web_services_client.rest.url.' . $key;
                 $container
                         ->setDefinition($restUrl,
-                                new DefinitionDecorator('amf_webservices_client.rest.url'))
+                                new DefinitionDecorator('amf_web_services_client.rest.url'))
                         ->replaceArgument(0, $value['url']['hostname'])
                         ->replaceArgument(1, $value['url']['scheme'])
                         ->replaceArgument(2, $value['url']['port'])
@@ -73,9 +73,9 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
                 $restUrlReference = new Reference($restUrl);
             }
             
-            $restEndpoint = 'amf_webservices_client.rest.' . $key;
+            $restEndpoint = 'amf_web_services_client.rest.' . $key;
             $container->setDefinition($restEndpoint,
-                            new DefinitionDecorator('amf_webservices_client.rest.endpoint'))
+                            new DefinitionDecorator('amf_web_services_client.rest.endpoint'))
                     ->setClass($value['class'])
                     ->replaceArgument(3, $restUrlReference)
                     ->replaceArgument(4, $restWsseReference)

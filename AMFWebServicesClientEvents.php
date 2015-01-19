@@ -19,8 +19,8 @@ namespace AMF\WebServicesClientBundle;
  */
 final class AMFWebServicesClientEvents
 {
-    const REST_GET_REQUEST    = 'amf_webservices_client.rest.request.http_get';
-    const REST_POST_REQUEST   = 'amf_webservices_client.rest.request.http_post';
-    const REST_PUT_REQUEST    = 'amf_webservices_client.rest.request.http_put';
-    const REST_DELETE_REQUEST = 'amf_webservices_client.rest.request.http_delete';
+    const REST_GET_REQUEST    = 'amf_web_services_client.rest.request.http_get';
+    const REST_POST_REQUEST   = 'amf_web_services_client.rest.request.http_post';
+    const REST_PUT_REQUEST    = 'amf_web_services_client.rest.request.http_put';
+    const REST_DELETE_REQUEST = 'amf_web_services_client.rest.request.http_delete';
 }

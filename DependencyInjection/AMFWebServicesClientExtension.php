@@ -43,16 +43,16 @@ class AMFWebServicesClientExtension extends Extension
         if (!empty($config['soap']))
         {
             $loader->load('soap.yml');
-            $container->setParameter('amf_webservices_client.soap.endpoints', $config['soap']['endpoints']);
+            $container->setParameter('amf_web_services_client.soap.endpoints', $config['soap']['endpoints']);
             foreach ($config['soap']['endpoints'] as $key => $value)
             {
                 if ($value['wsse']['enabled'] === true)
                 {   
-                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_webservices_client.soap.$key.wsse.%s")); 
+                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_web_services_client.soap.$key.wsse.%s")); 
                     unset($value['wsse']);
                 }
                 
-                $this->remapParametersNamespaces($value, $container, array('' => "amf_webservices_client.soap.$key.%s"));
+                $this->remapParametersNamespaces($value, $container, array('' => "amf_web_services_client.soap.$key.%s"));
             }
         }
     }
@@ -72,26 +72,26 @@ class AMFWebServicesClientExtension extends Extension
         {
             $loader->load('listeners.yml');
             $loader->load('rest.yml');
-            $container->setParameter('amf_webservices_client.rest.endpoints', $config['rest']['endpoints']);
+            $container->setParameter('amf_web_services_client.rest.endpoints', $config['rest']['endpoints']);
             foreach ($config['rest']['endpoints'] as $key => $value)
             {
                 if ($value['wsse']['enabled'] === true)
                 {
-                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_webservices_client.rest.$key.wsse.%s")); 
+                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_web_services_client.rest.$key.wsse.%s")); 
                     unset($value['wsse']);
                 }
                 if ($value['url']['enabled'] === true)
                 {
-                    $this->remapParametersNamespaces($value, $container, array('url' => "amf_webservices_client.rest.$key.url.%s")); 
+                    $this->remapParametersNamespaces($value, $container, array('url' => "amf_web_services_client.rest.$key.url.%s")); 
                     unset($value['url']);
                 }
                 
-                $this->remapParametersNamespaces($value, $container, array('' => "amf_webservices_client.rest.$key.%s"));
+                $this->remapParametersNamespaces($value, $container, array('' => "amf_web_services_client.rest.$key.%s"));
             }
             
-            $container->setParameter('amf_webservices_client.rest.decoders', $config['rest']['decoders']);
-            $container->setParameter('amf_webservices_client.rest.encoders', $config['rest']['encoders']);
-            $container->setParameter('amf_webservices_client.rest.curl_options', $config['rest']['curl_options']);
+            $container->setParameter('amf_web_services_client.rest.decoders', $config['rest']['decoders']);
+            $container->setParameter('amf_web_services_client.rest.encoders', $config['rest']['encoders']);
+            $container->setParameter('amf_web_services_client.rest.curl_options', $config['rest']['curl_options']);
         }
     }
 
