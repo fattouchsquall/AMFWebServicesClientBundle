@@ -7,7 +7,7 @@ Getting started with AMFWebServiceClientBundle
 > ***Note*** AMFWebServiceClientBundle requires curl to be installed to correctly run.
 
 The first step is to tell composer that you want to download AMFWebServiceClientBundle which can
-be achieved by entring the following line at the command prompt:
+be achieved by entering the following line at the command prompt:
 
 ```bash
     $ php composer.phar require amf/webservices-client-bundle: ~1.0
@@ -46,19 +46,19 @@ First of all, you must add the following minimal configuration to your `config.y
 # app/config/config.yml
     
     amf_web_services_client:
-    # soap section
+    # SOAP section
     soap:
         endpoints:
-            my_client:                                                       # The name of soap client to consume.
+            my_client:                                                       # This key's node will be used to name your service
                 class: MyCompany\MyBundle\Soap\MyClient
                 wsdl: http://my_webservice.com/file.wsdl
                 wsse:
                     username: 'test'                                      # The username for soap client, do not set this if there's no security
                     password: 'test'                                      # The password for soap client, do not set this if there's no security
-    # rest section
+    # ReST section
     rest:
-        endpoints:
-            my_client:
+        endpoints: 
+            my_client:                                                      # This key's node will be used to name your service
                 class: MyCompany\MyBundle\Rest\MyClient
                 url:
                     hostname: http://my_webservice.com
@@ -69,15 +69,18 @@ First of all, you must add the following minimal configuration to your `config.y
 
 [Read the whole configuration reference](01-config-reference.md)
 
+In SOAP section, If you declare the key of your web service in this config "my\_client", the id of service to be used for SOAP will be generated like this: `amf_webservices_client.soap.my_client`
+The same thing for ReST section, if you use "my\_client" as key, you'll have a service with an id `amf_webservices_client.rest.my_client` for this web service.
+
 3) Usage
 -------------------------------
 
 ### SOAP
 #### Step 1: Create the client class of web service
 
-First of all, you must create a client class that extends the base endpoint class for rest client.
+First of all, you must create a client class that extends the base endpoint class for SOAP client.
 
-> ***Note*** This is just an prototype, all methods here are used only for illustrade the way of implenting a rest client.
+> ***Note*** This is just an prototype, all methods are used here only for illustrate the way of implementing a SOAP client.
 
 ```php
 # src/MyCompany/MyBundle/Soap
@@ -112,8 +115,8 @@ class MyClient extends Endpoint
         }
         catch (\SoapFault $exception)
         {
-            $reflexiveMailBinding = new \ReflectionObject($this);
-            $className            = $reflexiveMailBinding->getName();
+            $reflexiveMyClient = new \ReflectionObject($this);
+            $className         = $reflexiveMyClient->getName();
             $this->wsLogger->logException($className, $methodName, $exception->getMessage());
             
             $success = false;
@@ -126,7 +129,9 @@ class MyClient extends Endpoint
 
 #### Step 2: Using inside your Controller
 
-After creating the class of client, all services are automatically created and can be now used to call your SOAP API as below:
+After creating the class of client, all services are automatically generated in accordance with keys in your `config.yml`.  
+
+Now you can use it to call your SOAP API as below:
 
 ```php
 # src/MyCompoany/MyBundle/Controller/MyController.php
@@ -134,15 +139,16 @@ After creating the class of client, all services are automatically created and c
     public function myAction(Request $request)
     {
         $data = $request->get('data');
+        // be sure to use the same key as defined in `config.yml` to call your service
         $responseData = $this->get('amf_webservices_client.soap.my_client')->myMethod($data);
     }
 ```
 ### ReST
 #### Step 1: Create the client class of web service
 
-First of all, you must create a client class that extends the base endpoint class for rest client.
+First of all, you must create a client class that extends the base endpoint class for ReST client.
 
-> ***Note*** This is just an prototype, all methods here are used only for illustrade the way of implenting a rest client.
+> ***Note*** This is just an prototype, all methods are used here only for illustrate the way of implementing a ReST client.
 
 ```php
 # src/MyCompany/MyBundle/Rest
@@ -164,7 +170,7 @@ class MyClient extends Endpoint
      * 
      * @return \stdClass
      */
-    public function getCallForWebServiceMethod(array $data=array())
+    public function myGetMethod(array $data=array())
     {
         // build the request array to send
         $queryData = array('params' => $data);
@@ -182,7 +188,7 @@ class MyClient extends Endpoint
      * 
      * @return \stdClass
      */
-    public function postCallForWebServiceMethod(array $data=array())
+    public function myPostMethod(array $data=array())
     {   
         $requestData = array('params' => $data);
         // you must provide the relative path of webservice method
@@ -195,7 +201,9 @@ class MyClient extends Endpoint
 
 #### Step 2: Using inside your Controller
 
-After creating the class of client, all services are automatically created and can be now used to call your ReST API as below:
+After creating the class of client, all services are automatically generated in accordance with keys in your `config.yml`.  
+
+Now you can use it to call your ReST API as below:
 
 ```php
 # src/MyCompoany/MyBundle/Controller/MyController.php
@@ -203,11 +211,13 @@ After creating the class of client, all services are automatically created and c
     public function myAction(Request $request)
     {
         $data = $request->get('data');
-        $responseData = $this->get('amf_webservices_client.rest.my_client')->postCallForWebServiceMethod($data);
+        // be sure to use the same key as defined in `config.yml` to call your service
+        $responsePostData = $this->get('amf_webservices_client.rest.my_client')->myPostMethod($data);
+        $responseGetData = $this->get('amf_webservices_client.rest.my_client')->myGetMethod($data);
     }
 ```
 
 4) Dependency
 -------------------------------
 
-This bundle needs the php native class \SoapClient and php curl installed to correctly run.
+This bundle needs that the extension php curl to be installed to correctly run.

@@ -1,8 +1,8 @@
 {
     "name": "amf/webservices-client-bundle",
-    "description": "A bundle for consuming Rest and Soap webservices",
+    "description": "A bundle for communication with ReST and Soap web services",
     "type": "symfony-bundle",
-    "keywords": ["WebServices", "Client", "Rest", "Soap"],
+    "keywords": ["WebServices", "Client", "ReST", "Soap"],
     "homepage": "https://github.com/fattouchsquall",
     "license": "MIT",
     "authors": [
