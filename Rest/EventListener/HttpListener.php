@@ -41,8 +41,7 @@ class HttpListener
      */
     public function __construct(array $options=array())
     {
-        $this->options    = $options;
-        $this->curlHandle = curl_init();
+        $this->options = $options;
     }
     
     /**
@@ -54,6 +53,7 @@ class HttpListener
      */
     public function onGetRequest(GetResponseEvent $getResponseEvent)
     {
+        $this->curlHandle = curl_init();
         curl_setopt($this->curlHandle, CURLOPT_HTTPGET, true);
         
         $this->execute($getResponseEvent);
@@ -68,6 +68,7 @@ class HttpListener
      */
     public function onPostRequest(GetResponseEvent $getResponseEvent)
     {   
+        $this->curlHandle = curl_init();
         curl_setopt($this->curlHandle, CURLOPT_POST, true);
         
         $this->execute($getResponseEvent);
@@ -82,6 +83,7 @@ class HttpListener
      */
     public function onPutRequest(GetResponseEvent $getResponseEvent)
     {   
+        $this->curlHandle = curl_init();
         curl_setopt($this->curlHandle, CURLOPT_CUSTOMREQUEST, 'PUT');
         
         $this->execute($getResponseEvent);
@@ -96,6 +98,7 @@ class HttpListener
      */
     public function onDeleteRequest(GetResponseEvent $getResponseEvent)
     {
+        $this->curlHandle = curl_init();
         curl_setopt($this->curlHandle, CURLOPT_CUSTOMREQUEST, 'DELETE');
         
         $this->execute($getResponseEvent);
@@ -130,6 +133,7 @@ class HttpListener
         $info   = curl_getinfo($this->curlHandle);
 
         curl_close($this->curlHandle);
+        unset($this->curlHandle);
        
         $response = Response::create($result, $info['http_code']);
         

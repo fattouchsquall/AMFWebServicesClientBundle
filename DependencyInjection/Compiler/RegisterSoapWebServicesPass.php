@@ -34,31 +34,31 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasParameter('amf_webservices_client.soap.endpoints') === false)
+        if ($container->hasParameter('amf_web_services_client.soap.endpoints') === false)
         {
             return;
         }
 
-        $endpoints = $container->getParameter('amf_webservices_client.soap.endpoints');
+        $endpoints = $container->getParameter('amf_web_services_client.soap.endpoints');
         foreach ($endpoints as $key => $value)
         {
             $soapWsse = null;
             if (($value['wsse']['enabled'] === true))
             {
 
-                $soapWsse = 'amf_webservices_client.soap.wsse.' . $key;
+                $soapWsse = 'amf_web_services_client.soap.wsse.' . $key;
                 $container
                         ->setDefinition($soapWsse,
-                                new DefinitionDecorator('amf_webservices_client.soap.wsse'))
+                                new DefinitionDecorator('amf_web_services_client.soap.wsse'))
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password']);
             }
             
             $soapWsseReference = new Reference($soapWsse);
             
-            $soapEndpoint = 'amf_webservices_client.soap.' . $key;
+            $soapEndpoint = 'amf_web_services_client.soap.' . $key;
             $container->setDefinition($soapEndpoint,
-                            new DefinitionDecorator('amf_webservices_client.soap.endpoint'))
+                            new DefinitionDecorator('amf_web_services_client.soap.endpoint'))
                     ->setClass($value['class'])
                     ->replaceArgument(0, $value['wsdl'])
                     ->replaceArgument(1, $soapWsseReference)

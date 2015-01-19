@@ -69,8 +69,8 @@ First of all, you must add the following minimal configuration to your `config.y
 
 [Read the whole configuration reference](01-config-reference.md)
 
-In SOAP section, If you declare the key of your web service in this config "my\_client", the id of service to be used for SOAP will be generated like this: `amf_webservices_client.soap.my_client`
-The same thing for ReST section, if you use "my\_client" as key, you'll have a service with an id `amf_webservices_client.rest.my_client` for this web service.
+In SOAP section, If you declare the key of your web service in this config "my\_client", the id of service to be used for SOAP will be generated like this: `amf_web_services_client.soap.my_client`
+The same thing for ReST section, if you use "my\_client" as key, you'll have a service with an id `amf_web_services_client.rest.my_client` for this web service.
 
 3) Usage
 -------------------------------
@@ -140,7 +140,7 @@ Now you can use it to call your SOAP API as below:
     {
         $data = $request->get('data');
         // be sure to use the same key as defined in `config.yml` to call your service
-        $responseData = $this->get('amf_webservices_client.soap.my_client')->myMethod($data);
+        $responseData = $this->get('amf_web_services_client.soap.my_client')->myMethod($data);
     }
 ```
 ### ReST
@@ -212,8 +212,8 @@ Now you can use it to call your ReST API as below:
     {
         $data = $request->get('data');
         // be sure to use the same key as defined in `config.yml` to call your service
-        $responsePostData = $this->get('amf_webservices_client.rest.my_client')->myPostMethod($data);
-        $responseGetData = $this->get('amf_webservices_client.rest.my_client')->myGetMethod($data);
+        $responsePostData = $this->get('amf_web_services_client.rest.my_client')->myPostMethod($data);
+        $responseGetData = $this->get('amf_web_services_client.rest.my_client')->myGetMethod($data);
     }
 ```
 
