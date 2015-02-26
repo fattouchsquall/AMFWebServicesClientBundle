@@ -11,4 +11,3 @@ services:
         class: %amf_web_services_client.soap.endpoint.class%
         abstract: true
         arguments: [~, ~, ~, ~]
- 
