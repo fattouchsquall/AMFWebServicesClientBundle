@@ -41,3 +41,4 @@ services:
         abstract: true
         arguments: ["@event_dispatcher", "@amf_web_services_client.rest.encoder_provider", "@amf_web_services_client.rest.decoder_provider", ~, ~, ~, ~]
         
+        

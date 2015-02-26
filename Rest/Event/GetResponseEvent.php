@@ -78,3 +78,4 @@ class GetResponseEvent extends Event
         $this->response = $response;
     }
 }
+

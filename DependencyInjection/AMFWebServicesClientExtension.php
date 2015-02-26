@@ -129,3 +129,4 @@ class AMFWebServicesClientExtension extends Extension
         }
     }
 }
+
