@@ -4,7 +4,7 @@ AMFWebServicesClientBundle
 This bundle provides a way to communicate with a multiple rest and soap webservices for a Symfony2 application. Features available include:
 
 - Defines methods for consuming SOAP WebServices.
-- Makes calls (GET, POST, PUT, DELETE) to REST WebServices.
+- Makes calls (GET, POST, PUT, DELETE) to ReST WebServices.
 
 Documentation
 -------------

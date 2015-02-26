@@ -15,7 +15,7 @@ namespace AMF\WebServicesClientBundle\Soap\Security;
  * @subpackage Security
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-class SoapWsseAuth
+class WsseAuth
 {
     
     /**
@@ -40,4 +40,4 @@ class SoapWsseAuth
         $this->Username = $username;
         $this->Password = $password;
     }
-} 
+}

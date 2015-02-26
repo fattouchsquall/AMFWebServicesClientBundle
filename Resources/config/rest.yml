@@ -1,0 +1,44 @@
+parameters:
+    amf_web_services_client.rest.url.class: AMF\WebServicesClientBundle\Rest\Component\Url
+    amf_web_services_client.rest.wsse.class: AMF\WebServicesClientBundle\Rest\Security\Wsse
+    amf_web_services_client.rest.endpoint.class: AMF\WebServicesClientBundle\Rest\Endpoint
+        
+services:
+    amf_web_services_client.rest.decoder.json:
+        class: %amf_web_services_client.rest.decoder.json.class%
+        
+    amf_web_services_client.rest.decoder.xml:
+        class: %amf_web_services_client.rest.decoder.xml.class%
+    
+    amf_web_services_client.rest.decoder_provider:
+        class: %amf_web_services_client.rest.decoder_provider.class%
+        arguments: [%amf_web_services_client.rest.decoders%]
+        calls:
+            - [setContainer, ["@service_container"]]
+            
+    amf_web_services_client.rest.encoder.json:
+        class: %amf_web_services_client.rest.encoder.json.class%
+        
+    amf_web_services_client.rest.encoder.xml:
+        class: %amf_web_services_client.rest.encoder.xml.class%
+        
+    amf_web_services_client.rest.encoder_provider:
+        class: %amf_web_services_client.rest.encoder_provider.class%
+        arguments: [%amf_web_services_client.rest.encoders%]
+        calls:
+            - [setContainer, ["@service_container"]]
+            
+    amf_web_services_client.rest.url:
+        class: %amf_web_services_client.rest.url.class%
+        arguments: [~, ~, ~, ~]
+        
+    amf_web_services_client.rest.wsse:
+        class: %amf_web_services_client.rest.wsse.class%
+        arguments: [~, ~, ~]
+        
+    amf_web_services_client.rest.endpoint:
+        class: %amf_web_services_client.rest.endpoint.class%
+        abstract: true
+        arguments: ["@event_dispatcher", "@amf_web_services_client.rest.encoder_provider", "@amf_web_services_client.rest.decoder_provider", ~, ~, ~, ~]
+        
+        
