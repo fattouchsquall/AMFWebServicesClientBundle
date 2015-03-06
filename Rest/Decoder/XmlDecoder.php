@@ -17,19 +17,15 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 /**
  * This class decodes xml data.
  *
- * @package AMFWebServicesClientBundle
- * @subpackage Decoder
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 class XmlDecoder implements DecoderInterface
 {
-
     /**
      * @var XmlEncoder
      */
     private $encoder;
 
-    
     /**
      * The constructor class.
      */
@@ -41,16 +37,12 @@ class XmlDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, array $context=array())
+    public function decode($data, array $context = array())
     {
-        try
-        {
+        try {
             return $this->encoder->decode($data, 'xml', $context);
-        }
-        catch (UnexpectedValueException $e)
-        {
-            return null;
+        } catch (UnexpectedValueException $e) {
+            return;
         }
     }
-
 }

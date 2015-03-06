@@ -18,51 +18,40 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Pass of compilation to register Rest webservices.
- * 
- * @package AMFWebServicesClientBundle
- * @subpackage Compiler
+ *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 class RegisterRestWebServicesPass implements CompilerPassInterface
 {
-
     /**
      * Register rest webservices definition.
      *
      * @param ContainerBuilder $container Instance of container.
-     * 
-     * @return void
      */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasParameter('amf_web_services_client.rest.endpoints') === false)
-        {
+        if ($container->hasParameter('amf_web_services_client.rest.endpoints') === false) {
             return;
         }
 
         $endpoints = $container->getParameter('amf_web_services_client.rest.endpoints');
-        foreach ($endpoints as $key => $value)
-        {
+        foreach ($endpoints as $key => $value) {
             $restWsseReference = null;
             $restUrlReference  = null;
-            if (($value['wsse']['enabled'] === true))
-            {
-
-                $restWsse = 'amf_web_services_client.rest.wsse.' . $key;
+            if (($value['wsse']['enabled'] === true)) {
+                $restWsse = 'amf_web_services_client.rest.wsse.'.$key;
                 $container
                         ->setDefinition($restWsse,
                                 new DefinitionDecorator('amf_web_services_client.rest.wsse'))
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password'])
                         ->replaceArgument(2, $value['wsse']['options']);
-                
+
                 $restWsseReference = new Reference($restWsse);
             }
-            
-            if (($value['url']['enabled'] === true))
-            {
 
-                $restUrl = 'amf_web_services_client.rest.url.' . $key;
+            if (($value['url']['enabled'] === true)) {
+                $restUrl = 'amf_web_services_client.rest.url.'.$key;
                 $container
                         ->setDefinition($restUrl,
                                 new DefinitionDecorator('amf_web_services_client.rest.url'))
@@ -70,11 +59,11 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
                         ->replaceArgument(1, $value['url']['scheme'])
                         ->replaceArgument(2, $value['url']['port'])
                         ->replaceArgument(3, $value['url']['query_delimiter']);
-                
+
                 $restUrlReference = new Reference($restUrl);
             }
-            
-            $restEndpoint = 'amf_web_services_client.rest.' . $key;
+
+            $restEndpoint = 'amf_web_services_client.rest.'.$key;
             $container->setDefinition($restEndpoint,
                             new DefinitionDecorator('amf_web_services_client.rest.endpoint'))
                     ->setClass($value['class'])

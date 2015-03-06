@@ -13,9 +13,7 @@ namespace AMF\WebServicesClientBundle;
 
 /**
  * The list of events.
- * 
- * @package AMFWebServicesClientBundle
- * @subpackage WebServicesClientBundle
+ *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 final class AMFWebServicesClientEvents
