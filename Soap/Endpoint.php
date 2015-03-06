@@ -15,16 +15,13 @@ use AMF\WebServicesClientBundle\Soap\Security\Wsse;
 
 /**
  * This class manages the interaction with a SOAP webservice.
- * 
- * @package AMFWebServicesClientBundle
- * @subpackage Soap
+ *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 abstract class Endpoint extends \SoapClient
 {
-    
     /**
-     * @var string 
+     * @var string
      */
     protected $wsdl;
 
@@ -32,54 +29,52 @@ abstract class Endpoint extends \SoapClient
      * @var Wsse
      */
     protected $wsse;
-    
+
     /**
      * @var array
      */
     protected $options;
-    
+
     /**
      * @var boolean
      */
     protected $isSecure;
-    
 
     /**
      * Constructor class.
-     * 
+     *
      * @param string  $wsdl     The link for wsdl file (default null).
      * @param Wsse    $wsse     The handler of soap wsse (default null).
      * @param array   $options  The options for soap client (default empty).
      * @param boolean $isSecure Whethere the webservice is secured or not (default false).
      */
-    public function __construct($wsdl=null, Wsse $wsse=null, array $options=array(), $isSecure=false)
+    public function __construct($wsdl = null, Wsse $wsse = null, array $options = array(), $isSecure = false)
     {
         $this->wsdl     = $wsdl;
         $this->wsse     = $wsse;
         $this->options  = $options;
         $this->isSecure = $isSecure;
     }
-    
+
     /**
      * Call web services with SoapClient.
      *
      * @param string $methodName The name of method to call.
      * @param array  $arguments  The arguments of the function to call (default empty).
-     * 
+     *
      * @return Soap response
-     */  
-    public function call($methodName, array $arguments=array())
+     */
+    public function call($methodName, array $arguments = array())
     {
         $client = new \SoapClient($this->wsdl, $this->options);
 
-        if ($this->isSecure === true)
-        {
+        if ($this->isSecure === true) {
             $wsseHeader = $this->wsse->generateHeader();
             $client->__setSoapHeaders($wsseHeader);
         }
-        
+
         $response = $client->__soapCall($methodName, $arguments);
-            
+
         return $response;
     }
 }

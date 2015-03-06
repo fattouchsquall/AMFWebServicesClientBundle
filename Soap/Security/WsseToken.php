@@ -13,23 +13,19 @@ namespace AMF\WebServicesClientBundle\Soap\Security;
 
 /**
  * The soap token for wsse.
- * 
- * @package AMFWebServicesClientBundle
- * @subpackage Security
+ *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 class WsseToken
 {
-    
     /**
      * @var string
      */
     protected $UsernameToken;
-    
-    
+
     /**
      * The constructor class.
-     * 
+     *
      * @param string $usernameToken The token for the username.
      */
     public function __construct($usernameToken)

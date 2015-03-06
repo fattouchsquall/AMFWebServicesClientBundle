@@ -18,46 +18,37 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Pass of compilation to register Soap webservices.
- * 
- * @package AMFWebServicesClientBundle
- * @subpackage Compiler
+ *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 class RegisterSoapWebServicesPass implements CompilerPassInterface
 {
-
     /**
      * Register soap webservices definition.
      *
      * @param ContainerBuilder $container Instance of container.
-     * 
-     * @return void
      */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasParameter('amf_web_services_client.soap.endpoints') === false)
-        {
+        if ($container->hasParameter('amf_web_services_client.soap.endpoints') === false) {
             return;
         }
 
         $endpoints = $container->getParameter('amf_web_services_client.soap.endpoints');
-        foreach ($endpoints as $key => $value)
-        {
+        foreach ($endpoints as $key => $value) {
             $soapWsse = null;
-            if (($value['wsse']['enabled'] === true))
-            {
-
-                $soapWsse = 'amf_web_services_client.soap.wsse.' . $key;
+            if (($value['wsse']['enabled'] === true)) {
+                $soapWsse = 'amf_web_services_client.soap.wsse.'.$key;
                 $container
                         ->setDefinition($soapWsse,
                                 new DefinitionDecorator('amf_web_services_client.soap.wsse'))
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password']);
             }
-            
+
             $soapWsseReference = new Reference($soapWsse);
-            
-            $soapEndpoint = 'amf_web_services_client.soap.' . $key;
+
+            $soapEndpoint = 'amf_web_services_client.soap.'.$key;
             $container->setDefinition($soapEndpoint,
                             new DefinitionDecorator('amf_web_services_client.soap.endpoint'))
                     ->setClass($value['class'])

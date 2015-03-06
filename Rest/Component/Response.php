@@ -13,28 +13,24 @@ namespace AMF\WebServicesClientBundle\Rest\Component;
 
 /**
  * This class represents a ReST Response.
- * 
- * @package AMFWebServicesClientBundle
- * @subpackage Component
+ *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 class Response
 {
-    
     /**
      * @var mixed
      */
     protected $content;
-    
+
     /**
      * @var integer
      */
     protected $statusCode;
-    
 
     /**
      * Constructor class.
-     * 
+     *
      * @param mixed   $content    The content of response.
      * @param integer $statusCode The status code of response.
      */
@@ -43,10 +39,10 @@ class Response
         $this->content    = $content;
         $this->statusCode = $statusCode;
     }
-    
+
     /**
      * Getter for content.
-     * 
+     *
      * @return mixed
      */
     public function getContent()
@@ -56,14 +52,14 @@ class Response
 
     /**
      * Getter for status code.
-     * 
+     *
      * @return integer
      */
     public function getStatusCode()
     {
         return $this->statusCode;
     }
-    
+
     /**
      * The setter for response format.
      *
@@ -71,11 +67,11 @@ class Response
      *
      * @void
      */
-    public function setResponseFormat($format='json')
+    public function setResponseFormat($format = 'json')
     {
         $this->format = $format;
     }
-    
+
     /**
      * The getter the response format.
      *
@@ -85,82 +81,81 @@ class Response
     {
         return $this->format;
     }
-    
+
     /**
      * Tests whether the response is a valid json or not.
-     * 
+     *
      * @return boolean
      */
     public function isJson()
     {
         json_decode($this->content);
-        
+
         return (json_last_error() == JSON_ERROR_NONE);
     }
-    
+
     /**
      * Tests whether the response is a valid xml or not.
-     * 
+     *
      * @return boolean
      */
     public function isXml()
-    {   
+    {
         $loaded = simplexml_load_string($this->content);
-        
-        if ($loaded === false)
-        {
+
+        if ($loaded === false) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Tests whether the response is ok or not.
-     * 
+     *
      * @return boolean
      */
     public function isSuccess()
     {
         return $this->statusCode >= 200 && $this->statusCode < 300;
     }
-    
+
     /**
      * Tests whether there's a froward or not.
-     * 
+     *
      * @return boolean
      */
     public function isForward()
     {
         return $this->statusCode >= 300 && $this->statusCode < 400;
     }
-    
+
     /**
      * Tests whether there's a client error.
-     * 
+     *
      * @return boolean
      */
     public function isClientError()
     {
         return $this->statusCode >= 400 && $this->statusCode < 500;
     }
-    
+
     /**
      * Tests whether there's an internal error or not.
-     * 
+     *
      * @return boolean
      */
     public function isInternetError()
     {
         return $this->statusCode >= 500 && $this->statusCode < 600;
     }
-    
+
     /**
      * Creates a response.
-     * 
+     *
      * @param mixed   $content    The content of response.
      * @param integer $statusCode The code status of response.
-     * 
+     *
      * @return \static
      */
     public static function create($content, $statusCode)

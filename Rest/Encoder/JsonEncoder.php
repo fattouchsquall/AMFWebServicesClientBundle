@@ -16,19 +16,15 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder as BaseJsonEncoder;
 /**
  * This class encodes json data.
  *
- * @package AMFWebServicesClientBundle
- * @subpackage Encoder
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
 class JsonEncoder implements EncoderInterface
 {
-    
     /**
      * @var BaseJsonEncoder
      */
     protected $encoder;
-    
-    
+
     /**
      * The constructor class.
      */
@@ -36,11 +32,11 @@ class JsonEncoder implements EncoderInterface
     {
         $this->encoder = new BaseJsonEncoder();
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function encode($data, array $context=array())
+    public function encode($data, array $context = array())
     {
         return $this->encoder->encode($data, 'json', $context);
     }
