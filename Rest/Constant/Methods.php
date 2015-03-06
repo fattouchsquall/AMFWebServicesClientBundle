@@ -1,11 +1,12 @@
 <?php
 
-/**
- * This class defines constants http methods.
+/*
+ * This file is part of the AMFWebServicesClientBundle package.
  *
- * @package AMFWebServicesClientBundle
- * @subpackage Constants
- * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
+ * (c) Amine Fattouch <http://github.com/fattouchsquall>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace AMF\WebServicesClientBundle\Rest\Constant;
