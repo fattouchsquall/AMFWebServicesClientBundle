@@ -82,11 +82,16 @@ class Wsse
      */
     protected function generateNonce()
     {
-        $nonce = "";
+        $chars   = $this->options['nonce_chars'];
+        $random  = "" . microtime();
+        $random .= mt_rand();
+        
+        $mi = strlen($chars) - 1;
         for ($i = 0; $i < $this->options['nonce_length']; $i++) {
-            $nonce += substr($this->options['nonce_chars'], floor(rand() * strlen($this->options['nonce_chars'])));
+            $random .= $chars[mt_rand(0, $mi)];
         }
-
+        $nonce = md5($random);
+        
         return $nonce;
     }
 
