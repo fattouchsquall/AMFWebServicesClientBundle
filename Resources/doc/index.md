@@ -45,7 +45,7 @@ First of all, you must add the following minimal configuration to your `config.y
 ```yaml
 # app/config/config.yml
     
-    amf_web_services_client:
+amf_web_services_client:
     # SOAP section
     soap:
         endpoints:
