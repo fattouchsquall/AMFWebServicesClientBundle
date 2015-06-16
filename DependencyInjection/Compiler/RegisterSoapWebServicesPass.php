@@ -33,10 +33,11 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
         if ($container->hasParameter('amf_web_services_client.soap.endpoints') === false) {
             return;
         }
-
+        
         $endpoints = $container->getParameter('amf_web_services_client.soap.endpoints');
         foreach ($endpoints as $key => $value) {
-            $soapWsse = null;
+            $soapWsseReference = null;
+            $soapWsse          = null;
             if (($value['wsse']['enabled'] === true)) {
                 $soapWsse = 'amf_web_services_client.soap.wsse.'.$key;
                 $container
@@ -44,9 +45,9 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
                                 new DefinitionDecorator('amf_web_services_client.soap.wsse'))
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password']);
+                
+                $soapWsseReference = new Reference($soapWsse);
             }
-
-            $soapWsseReference = new Reference($soapWsse);
 
             $soapEndpoint = 'amf_web_services_client.soap.'.$key;
             $container->setDefinition($soapEndpoint,
