@@ -19,10 +19,9 @@
         "symfony/console": "~2.0"
     },
     "autoload": {
-        "psr-4" : { "AMF\\WebServicesClientBundle" : "" }
+        "psr-4" : { "AMF\\WebServicesClientBundle\\" : "" }
     },
     "minimum-stability": "dev",
-    "target-dir": "AMF/WebServicesClientBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
