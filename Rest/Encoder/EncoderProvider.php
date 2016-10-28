@@ -11,14 +11,14 @@
 
 namespace AMF\WebServicesClientBundle\Rest\Encoder;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * This is the container provider for the encoder.
  *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-class EncoderProvider extends ContainerAware implements EncoderProviderInterface
+class EncoderProvider extends ContainerAwareTrait implements EncoderProviderInterface
 {
     /**
      * @var array

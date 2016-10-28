@@ -11,14 +11,14 @@
 
 namespace AMF\WebServicesClientBundle\Rest\Decoder;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * This is the container provider for the decoder.
  *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-class DecoderProvider extends ContainerAware implements DecoderProviderInterface
+class DecoderProvider extends ContainerAwareTrait implements DecoderProviderInterface
 {
     /**
      * @var array
