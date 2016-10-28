@@ -89,10 +89,10 @@ First of all, you must create a client class that extends the base endpoint clas
 
 namespace MyCompany\MyBundle\Soap;
 
-use AMF\WebServicesClientBundle\Soap\Endpoint;
+use AMF\WebServicesClientBundle\Soap\AbstractEndpoint;
 use AMF\WebServicesClientBundle\Soap\Security\Wsse;
 
-class MyClient extends Endpoint
+class MyClient extends AbstractEndpoint
 {
     
     /**
@@ -102,27 +102,22 @@ class MyClient extends Endpoint
      * 
      * @return boolean
      */
-    public function myMethod(array $data=array())
+    public function myMethod(array $data=[])
     {
         // build the request array to send
-        $params = array('params' => $data);
-        
-        $methodName = __FUNCTION__;        
-        $success    = true;
-        try
-        {
-            $this->call($methodName, $params);
-        }
-        catch (\SoapFault $exception)
-        {
+        $params['params'] = $data;
+
+        try {
+            $this->call('myMethod', $params);
+        } catch (\SoapFault $exception) {
             $reflexiveMyClient = new \ReflectionObject($this);
             $className         = $reflexiveMyClient->getName();
-            $this->wsLogger->logException($className, $methodName, $exception->getMessage());
+            $this->wsLogger->logException($className, __FUNCTION__, $exception->getMessage());
             
-            $success = false;
             throw $exception;
         }
-        return $success; 
+
+        return true; 
     }
 }
 ```

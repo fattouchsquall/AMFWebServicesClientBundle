@@ -53,26 +53,50 @@ class Wsse
                 && strlen($this->password) > 0) {
             $xsdNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
 
-            $usernameSoapVar  = new \SoapVar($this->username, XSD_STRING, null,
-                                                $xsdNamespace, null, $xsdNamespace);
-            $passwordSoapVar  = new \SoapVar($this->password, XSD_STRING, null,
-                                                $xsdNamespace, null, $xsdNamespace);
+            $usernameSoapVar  = new \SoapVar(
+                $this->username,
+                XSD_STRING,
+                null,
+                $xsdNamespace,
+                null,
+                $xsdNamespace
+            );
+            $passwordSoapVar  = new \SoapVar(
+                $this->password,
+                XSD_STRING,
+                null,
+                $xsdNamespace,
+                null,
+                $xsdNamespace
+            );
             $wsseAuth         = new WsseAuth($usernameSoapVar, $passwordSoapVar);
-            $wsseAuthSoapVar  = new \SoapVar($wsseAuth, SOAP_ENC_OBJECT, null,
-                                                $xsdNamespace, 'UsernameToken',
-                                                $xsdNamespace);
+            $wsseAuthSoapVar  = new \SoapVar(
+                $wsseAuth,
+                SOAP_ENC_OBJECT,
+                null,
+                $xsdNamespace,
+                'UsernameToken',
+                $xsdNamespace
+            );
             $wsseToken        = new WsseToken($wsseAuthSoapVar);
-            $wsseTokenSoapVar = new \SoapVar($wsseToken, SOAP_ENC_OBJECT,
-                                                null, $xsdNamespace,
-                                                'UsernameToken', $xsdNamespace);
-            $secHeaderValue   = new \SoapVar($wsseTokenSoapVar,
-                                                SOAP_ENC_OBJECT, null,
-                                                $xsdNamespace, 'Security',
-                                                $xsdNamespace);
+            $wsseTokenSoapVar = new \SoapVar(
+                $wsseToken,
+                SOAP_ENC_OBJECT,
+                null,
+                $xsdNamespace,
+                'UsernameToken',
+                $xsdNamespace
+            );
+            $secHeaderValue   = new \SoapVar(
+                $wsseTokenSoapVar,
+                SOAP_ENC_OBJECT,
+                null,
+                $xsdNamespace,
+                'Security',
+                $xsdNamespace
+            );
 
-            $soapHeader = new \SoapHeader($xsdNamespace, 'Security', $secHeaderValue);
-
-            return $soapHeader;
+            return new \SoapHeader($xsdNamespace, 'Security', $secHeaderValue);
         }
 
         throw new \Exception('Username and password cannot be empty');

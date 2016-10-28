@@ -27,7 +27,7 @@ use AMF\WebServicesClientBundle\Rest\Decoder\DecoderInterface;
  *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-abstract class Endpoint
+abstract class AbstractEndpoint
 {
     /**
      * @var EventDispatcherInterface
@@ -65,14 +65,15 @@ abstract class Endpoint
      * @param boolean                  $requestFormat   The format of request (default null).
      * @param boolean                  $responseFormat  The format of response (default null).
      */
-    public function __construct(EventDispatcherInterface $dispatcher = null,
-                                EncoderProviderInterface $encoderProvider = null,
-                                DecoderProviderInterface $decoderProvider = null,
-                                Url $url = null,
-                                Wsse $wsse = null,
-                                $requestFormat = null,
-                                $responseFormat = null)
-    {
+    public function __construct(
+        EventDispatcherInterface $dispatcher = null,
+        EncoderProviderInterface $encoderProvider = null,
+        DecoderProviderInterface $decoderProvider = null,
+        Url $url = null,
+        Wsse $wsse = null,
+        $requestFormat = null,
+        $responseFormat = null
+    ) {
         $this->dispatcher = $dispatcher;
         $this->encoder    = $encoderProvider->getEncoder($requestFormat);
         $this->decoder    = $decoderProvider->getDecoder($responseFormat);
@@ -83,11 +84,15 @@ abstract class Endpoint
     /**
      * Calls Rest API method.
      *
-     * @param Request $request The current ReST request.
+     * @param string $event
+     * @param string $path
+     * @param array  $query
+     * @param array  $request
+     * @param array  $server
      *
      * @return RestResponse
      */
-    public function call($event, $path = null, array $query = array(), array $request = array(), array $server = array())
+    public function call($event, $path = null, array $query = [], array $request = [], array $server = [])
     {
         $request = $this->prepareRequest($path, $query, $request, $server);
 
@@ -116,7 +121,7 @@ abstract class Endpoint
      *
      * @return Request
      */
-    protected function prepareRequest($actionPath = null, array $query = array(), array $request = array(), array $server = array())
+    protected function prepareRequest($actionPath = null, array $query = [], array $request = [], array $server = [])
     {
         $uri = null;
         if (isset($this->wsse)) {
@@ -144,7 +149,7 @@ abstract class Endpoint
      *
      * @return mixed
      */
-    protected function encodeRequest(array $request = array())
+    protected function encodeRequest(array $request = [])
     {
         return $this->encoder->encode($request);
     }

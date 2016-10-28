@@ -33,7 +33,7 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
         if ($container->hasParameter('amf_web_services_client.soap.endpoints') === false) {
             return;
         }
-        
+
         $endpoints = $container->getParameter('amf_web_services_client.soap.endpoints');
         foreach ($endpoints as $key => $value) {
             $soapWsseReference = null;
@@ -41,21 +41,28 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
             if (($value['wsse']['enabled'] === true)) {
                 $soapWsse = 'amf_web_services_client.soap.wsse.'.$key;
                 $container
-                        ->setDefinition($soapWsse,
-                                new DefinitionDecorator('amf_web_services_client.soap.wsse'))
+                        ->setDefinition(
+                            $soapWsse,
+                            new DefinitionDecorator('amf_web_services_client.soap.wsse')
+                        )
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password']);
-                
+
                 $soapWsseReference = new Reference($soapWsse);
             }
 
+            $soapService = $container->getDefinition('amf_web_services_client.soap')
+                                    ->replaceArgument(0, $value['wsdl'])
+                                    ->replaceArgument(0, $value['options']);
+
             $soapEndpoint = 'amf_web_services_client.soap.'.$key;
-            $container->setDefinition($soapEndpoint,
-                            new DefinitionDecorator('amf_web_services_client.soap.endpoint'))
+            $container->setDefinition(
+                soapEndpoint,
+                new DefinitionDecorator('amf_web_services_client.soap.endpoint')
+            )
                     ->setClass($value['class'])
-                    ->replaceArgument(0, $value['wsdl'])
-                    ->replaceArgument(1, $soapWsseReference)
-                    ->replaceArgument(2, $value['options'])
+                    ->replaceArgument($soapService)
+                    ->replaceArgument(1, $soapService)
                     ->replaceArgument(3, $value['wsse']['enabled']);
         }
     }

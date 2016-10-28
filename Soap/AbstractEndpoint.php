@@ -18,22 +18,17 @@ use AMF\WebServicesClientBundle\Soap\Security\Wsse;
  *
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
  */
-abstract class Endpoint extends \SoapClient
+abstract class AbstractEndpoint
 {
     /**
-     * @var string
+     * @var \SoapClient
      */
-    protected $wsdl;
+    protected $soapClient;
 
     /**
      * @var Wsse
      */
     protected $wsse;
-
-    /**
-     * @var array
-     */
-    protected $options;
 
     /**
      * @var boolean
@@ -43,38 +38,32 @@ abstract class Endpoint extends \SoapClient
     /**
      * Constructor class.
      *
-     * @param string  $wsdl     The link for wsdl file (default null).
-     * @param Wsse    $wsse     The handler of soap wsse (default null).
-     * @param array   $options  The options for soap client (default empty).
-     * @param boolean $isSecure Whethere the webservice is secured or not (default false).
+     * @param \SoapClient $soapClient The soap client.
+     * @param Wsse        $wsse       The handler of soap wsse (default null).
+     * @param boolean     $isSecure   Whether the webservice is secured or not (default false).
      */
-    public function __construct($wsdl = null, Wsse $wsse = null, array $options = array(), $isSecure = false)
+    public function __construct(\SoapClient $soapClient, Wsse $wsse = null, $isSecure = false)
     {
-        $this->wsdl     = $wsdl;
-        $this->wsse     = $wsse;
-        $this->options  = $options;
-        $this->isSecure = $isSecure;
+        $this->soapClient = $soapClient;
+        $this->wsse       = $wsse;
+        $this->isSecure   = $isSecure;
     }
 
     /**
-     * Call web services with SoapClient.
+     * Calls web services with SoapClient.
      *
      * @param string $methodName The name of method to call.
      * @param array  $arguments  The arguments of the function to call (default empty).
      *
      * @return Soap response
      */
-    public function call($methodName, array $arguments = array())
+    public function call($methodName, array $arguments = [])
     {
-        $client = new \SoapClient($this->wsdl, $this->options);
-
         if ($this->isSecure === true) {
             $wsseHeader = $this->wsse->generateHeader();
-            $client->__setSoapHeaders($wsseHeader);
+            $this->soapClient->__setSoapHeaders($wsseHeader);
         }
 
-        $response = $client->__soapCall($methodName, $arguments);
-
-        return $response;
+        return $this->soapClient->__soapCall($methodName, $arguments);
     }
 }

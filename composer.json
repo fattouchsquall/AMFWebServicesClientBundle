@@ -19,7 +19,8 @@
         "symfony/console": "~2.0"
     },
     "require-dev": {
-       "phake/phake": "@stable"
+       "phake/phake": "@stable",
+       "phpunit/phpunit": "~4.8|~5.0"
     },
     "autoload": {
         "psr-4" : { "AMF\\WebServicesClientBundle\\" : "" }
