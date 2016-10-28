@@ -37,7 +37,7 @@ class XmlDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, array $context = array())
+    public function decode($data, array $context = [])
     {
         try {
             return $this->encoder->decode($data, 'xml', $context);

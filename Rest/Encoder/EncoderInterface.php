@@ -26,5 +26,5 @@ interface EncoderInterface
      *
      * @return array
      */
-    public function encode($data, array $context = array());
+    public function encode($data, array $context = []);
 }

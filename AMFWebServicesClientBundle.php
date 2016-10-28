@@ -2,7 +2,7 @@
 
 /**
  * The main class of the bundle.
- * 
+ *
  * @package AMFWebServicesClientBundle
  * @subpackage WebServicesClientBundle
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
@@ -18,7 +18,7 @@ use AMF\WebServicesClientBundle\DependencyInjection\Compiler\RegisterRestWebServ
 
 /**
  * The main class of the bundle.
- * 
+ *
  * @package AMFWebServicesClientBundle
  * @subpackage WebServicesClientBundle
  * @author Mohamed Amine Fattouch <amine.fattouch@gmail.com>
@@ -28,17 +28,16 @@ class AMFWebServicesClientBundle extends Bundle
 
     /**
      * Builds the container.
-     * 
+     *
      * @param ContainerBuilder $container The container.
-     * 
+     *
      * @return void
      */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        
+
         $container->addCompilerPass(new RegisterSoapWebServicesPass());
         $container->addCompilerPass(new RegisterRestWebServicesPass());
     }
-
 }

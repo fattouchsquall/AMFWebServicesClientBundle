@@ -27,11 +27,11 @@ class RestException extends \Exception
      * The constructor class.
      *
      * @param string     $message  The internal exception message.
-     * @param \Exception $previous The previous exception.
      * @param integer    $code     The internal exception code.
+     * @param \Exception $previous The previous exception.
      * @param array      $data     The wrong data.
      */
-    public function __construct($message = null, $code = 0, \Exception $previous = null, array $data = array())
+    public function __construct($message = null, $code = 0, \Exception $previous = null, array $data = [])
     {
         parent::__construct($message, $code, $previous);
 

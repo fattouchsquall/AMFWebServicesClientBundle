@@ -40,7 +40,7 @@ class Wsse
      * @param string $password The password of wsse security.
      * @param array  $options  Options to encode password.
      */
-    public function __construct($username, $password, array $options = array())
+    public function __construct($username, $password, array $options = [])
     {
         $this->username = $username;
         $this->password = $password;
@@ -56,7 +56,7 @@ class Wsse
      */
     public function generateHeader()
     {
-        $header = array();
+        $header = [];
         if (isset($this->password) && isset($this->username)) {
             $now     = new \DateTime('now');
             $created = $now->format('Y-m-d H:i:s');
@@ -65,8 +65,12 @@ class Wsse
             $digest = $this->generatePasswordDigest($nonce, $created);
 
             $header['HTTP_AUTHORISATION'] = 'WSSE profile="UsernameToken"';
-            $header['HTTP_X-WSSE']        = sprintf('UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-                        $this->username, $digest, base64_encode($nonce), $created
+            $header['HTTP_X-WSSE']        = sprintf(
+                'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+                $this->username,
+                $digest,
+                base64_encode($nonce),
+                $created
             );
 
             return $header;
@@ -83,15 +87,15 @@ class Wsse
     protected function generateNonce()
     {
         $chars   = $this->options['nonce_chars'];
-        $random  = "" . microtime();
+        $random  = "".microtime();
         $random .= mt_rand();
-        
+
         $mi = strlen($chars) - 1;
         for ($i = 0; $i < $this->options['nonce_length']; $i++) {
             $random .= $chars[mt_rand(0, $mi)];
         }
         $nonce = md5($random);
-        
+
         return $nonce;
     }
 

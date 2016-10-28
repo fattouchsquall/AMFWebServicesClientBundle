@@ -26,14 +26,15 @@ class Configuration implements ConfigurationInterface
         // more information on that topic.
         $this->addSoapSection($rootNode);
         $this->addRestSection($rootNode);
+
         return $treeBuilder;
     }
-    
+
     /**
      * Adds the config of soap to global config.
-     * 
+     *
      * @param ArrayNodeDefinition $node The root element for the config nodes.
-     * 
+     *
      * @return void
      */
     protected function addSoapSection(ArrayNodeDefinition $node)
@@ -69,19 +70,19 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
     }
-    
+
     /**
      * Adds the config of rest to global config.
-     * 
+     *
      * @param ArrayNodeDefinition $node The root node of the config for this bundle.
-     * 
+     *
      * @return void
      */
     private function addRestSection(ArrayNodeDefinition $node)
-    {       
+    {
         $schemes    = array('https', 'http');
         $delimiters = array('/', '?');
-        
+
         $node->children()
                 ->arrayNode('rest')
                 ->addDefaultsIfNotSet()

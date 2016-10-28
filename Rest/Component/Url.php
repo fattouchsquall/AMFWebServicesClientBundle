@@ -108,7 +108,7 @@ class Url
      *
      * @return string
      */
-    public function getUriForPath($path, array $query = array())
+    public function getUriForPath($path, array $query = [])
     {
         $formattedQuery = $this->buildQuery($query);
         $fullUri        = $this->buildBaseUrl().'/'.ltrim($path, '/').(isset($formattedQuery) && strlen($formattedQuery) > 0 ? $this->queryDelimiter.$formattedQuery : '');
@@ -141,7 +141,7 @@ class Url
      *
      * @return string
      */
-    protected function buildQuery(array $query = array())
+    protected function buildQuery(array $query = [])
     {
         $formattedQuery = '';
         if (isset($query) && !empty($query)) {

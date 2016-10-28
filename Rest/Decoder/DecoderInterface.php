@@ -26,5 +26,5 @@ interface DecoderInterface
      *
      * @return array
      */
-    public function decode($data, array $context = array());
+    public function decode($data, array $context = []);
 }

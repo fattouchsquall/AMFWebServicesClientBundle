@@ -23,6 +23,8 @@
             <exclude>
                 <directory>./Resources</directory>
                 <directory>./Tests</directory>
+                <directory>./Soap/WsseAuth</directory>
+                <directory>./Soap/WsseToken</directory>
             </exclude>
         </whitelist>
     </filter>

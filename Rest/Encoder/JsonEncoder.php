@@ -36,7 +36,7 @@ class JsonEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function encode($data, array $context = array())
+    public function encode($data, array $context = [])
     {
         return $this->encoder->encode($data, 'json', $context);
     }

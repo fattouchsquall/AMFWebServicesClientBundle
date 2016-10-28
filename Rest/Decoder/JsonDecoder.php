@@ -36,7 +36,7 @@ class JsonDecoder implements DecoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($data, array $context = array())
+    public function decode($data, array $context = [])
     {
         return $this->decoder->decode($data, 'json', $context);
     }

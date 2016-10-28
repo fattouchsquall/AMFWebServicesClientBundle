@@ -24,71 +24,65 @@ class AMFWebServicesClientExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        
+
         $this->registerRestConfiguration($loader, $config, $container);
         $this->registerSoapConfiguration($loader, $config, $container);
     }
-    
+
     /**
      * Loads Soap config.
-     * 
+     *
      * @param LoaderInterface  $loader    The loader of file.
      * @param array            $config    The gloabl config of this bundle.
      * @param ContainerBuilder $container The container for dependency injection.
-     * 
+     *
      * @return void
      */
     protected function registerSoapConfiguration(LoaderInterface $loader, array $config, ContainerBuilder $container)
     {
-        if (!empty($config['soap']))
-        {
+        if (!empty($config['soap'])) {
             $loader->load('soap.yml');
             $container->setParameter('amf_web_services_client.soap.endpoints', $config['soap']['endpoints']);
-            foreach ($config['soap']['endpoints'] as $key => $value)
-            {
-                if ($value['wsse']['enabled'] === true)
-                {   
-                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_web_services_client.soap.$key.wsse.%s")); 
+            foreach ($config['soap']['endpoints'] as $key => $value) {
+                if ($value['wsse']['enabled'] === true) {
+                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_web_services_client.soap.$key.wsse.%s"));
                     unset($value['wsse']);
                 }
-                
+
                 $this->remapParametersNamespaces($value, $container, array('' => "amf_web_services_client.soap.$key.%s"));
             }
         }
     }
-    
+
     /**
      * Loads ReST config.
-     * 
+     *
      * @param LoaderInterface  $loader    The loader of file.
      * @param array            $config    The gloabl config of this bundle.
      * @param ContainerBuilder $container The container for dependency injection.
-     * 
+     *
      * @return void
      */
     protected function registerRestConfiguration(LoaderInterface $loader, array $config, ContainerBuilder $container)
     {
-        if (!empty($config['rest']))
-        {
+        if (!empty($config['rest'])) {
             $loader->load('listeners.yml');
             $loader->load('rest.yml');
             $container->setParameter('amf_web_services_client.rest.endpoints', $config['rest']['endpoints']);
-            foreach ($config['rest']['endpoints'] as $key => $value)
-            {
-                if ($value['wsse']['enabled'] === true)
-                {
-                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_web_services_client.rest.$key.wsse.%s")); 
+            foreach ($config['rest']['endpoints'] as $key => $value) {
+                if ($value['wsse']['enabled'] === true) {
+                    $this->remapParametersNamespaces($value, $container, array('wsse' => "amf_web_services_client.rest.$key.wsse.%s"));
                     unset($value['wsse']);
                 }
-                if ($value['url']['enabled'] === true)
-                {
-                    $this->remapParametersNamespaces($value, $container, array('url' => "amf_web_services_client.rest.$key.url.%s")); 
+
+                if ($value['url']['enabled'] === true) {
+                    $this->remapParametersNamespaces($value, $container, array('url' => "amf_web_services_client.rest.$key.url.%s"));
                     unset($value['url']);
                 }
-                
+
                 $this->remapParametersNamespaces($value, $container, array('' => "amf_web_services_client.rest.$key.%s"));
             }
-            
+
             $container->setParameter('amf_web_services_client.rest.decoders', $config['rest']['decoders']);
             $container->setParameter('amf_web_services_client.rest.encoders', $config['rest']['encoders']);
             $container->setParameter('amf_web_services_client.rest.curl_options', $config['rest']['curl_options']);
@@ -98,35 +92,28 @@ class AMFWebServicesClientExtension extends Extension
 
     /**
      * Maps parameters to add them in container.
-     * 
+     *
      * @param array            $config     The gloabl config of this bundle.
      * @param ContainerBuilder $container  The container for dependency injection.
      * @param array            $namespaces Config namespaces to add as parameters in the container.
-     * 
+     *
      * @return void
      */
-    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces) 
+    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
     {
-        foreach ($namespaces as $namespace => $map) 
-        {
-            if (isset($namespace) && strlen($namespace) > 0) 
-            {
-                if (!array_key_exists($namespace, $config)) 
-                {
+        foreach ($namespaces as $namespace => $map) {
+            if (isset($namespace) && strlen($namespace) > 0) {
+                if (!array_key_exists($namespace, $config)) {
                     continue;
                 }
                 $namespaceConfig = $config[$namespace];
-            }
-            else
-            {
+            } else {
                 $namespaceConfig = $config;
             }
-            
-            foreach ($namespaceConfig as $name => $value) 
-            {
+
+            foreach ($namespaceConfig as $name => $value) {
                 $container->setParameter(sprintf($map, $name), $value);
             }
         }
     }
 }
-

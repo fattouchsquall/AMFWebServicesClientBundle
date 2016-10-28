@@ -41,8 +41,10 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
             if (($value['wsse']['enabled'] === true)) {
                 $restWsse = 'amf_web_services_client.rest.wsse.'.$key;
                 $container
-                        ->setDefinition($restWsse,
-                                new DefinitionDecorator('amf_web_services_client.rest.wsse'))
+                        ->setDefinition(
+                            $restWsse,
+                            new DefinitionDecorator('amf_web_services_client.rest.wsse')
+                        )
                         ->replaceArgument(0, $value['wsse']['username'])
                         ->replaceArgument(1, $value['wsse']['password'])
                         ->replaceArgument(2, $value['wsse']['options']);
@@ -53,8 +55,10 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
             if (($value['url']['enabled'] === true)) {
                 $restUrl = 'amf_web_services_client.rest.url.'.$key;
                 $container
-                        ->setDefinition($restUrl,
-                                new DefinitionDecorator('amf_web_services_client.rest.url'))
+                        ->setDefinition(
+                            $restUrl,
+                            new DefinitionDecorator('amf_web_services_client.rest.url')
+                        )
                         ->replaceArgument(0, $value['url']['hostname'])
                         ->replaceArgument(1, $value['url']['scheme'])
                         ->replaceArgument(2, $value['url']['port'])
@@ -64,8 +68,10 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
             }
 
             $restEndpoint = 'amf_web_services_client.rest.'.$key;
-            $container->setDefinition($restEndpoint,
-                            new DefinitionDecorator('amf_web_services_client.rest.endpoint'))
+            $container->setDefinition(
+                $restEndpoint,
+                new DefinitionDecorator('amf_web_services_client.rest.endpoint')
+            )
                     ->setClass($value['class'])
                     ->replaceArgument(3, $restUrlReference)
                     ->replaceArgument(4, $restWsseReference)

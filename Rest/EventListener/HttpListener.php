@@ -36,7 +36,7 @@ class HttpListener
      *
      * @param array $options Options for curl (default empty).
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->options = $options;
     }

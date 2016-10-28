@@ -59,7 +59,7 @@ class Request
      * @param array $query   The query parameters (default empty).
      * @param array $server  The server parameters (default empty).
      */
-    public function __construct(array $request = array(), array $query = array(), array $server = array())
+    public function __construct(array $request = [], array $query = [], array $server = [])
     {
         $this->init($request, $query, $server);
     }
@@ -71,7 +71,7 @@ class Request
      * @param array $query   The GET parameters (default empty).
      * @param array $server  The SERVER parameters (default empty).
      */
-    public function init(array $request = array(), array $query = array(), array $server = array())
+    public function init(array $request = [], array $query = [], array $server = [])
     {
         $this->request = new ParameterBag($request);
         $this->query   = new ParameterBag($query);
@@ -82,7 +82,7 @@ class Request
     /**
      * Create a static instance of this class.
      *
-     * @param string $url     The uri.
+     * @param string $uri     The uri.
      * @param string $query   The method of request.
      * @param array  $request The parameters of request.
      * @param array  $server  The server parameters.
@@ -90,7 +90,7 @@ class Request
      *
      * @return \static
      */
-    public static function create($uri = null, array $query = array(), array $request = array(), array $server = array(), $format = null)
+    public static function create($uri = null, array $query = [], array $request = [], array $server = [], $format = null)
     {
         if (!isset($server['HTTP_CONTENT_TYPE'])) {
             if (null === static::$formats) {
@@ -166,7 +166,7 @@ class Request
             return'';
         }
 
-        $content = array();
+        $content = [];
         ksort($headers);
         foreach ($headers as $name => $values) {
             $name = implode('-', array_map('ucfirst', explode('-', $name)));

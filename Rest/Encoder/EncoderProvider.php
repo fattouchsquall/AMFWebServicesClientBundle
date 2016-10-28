@@ -30,7 +30,7 @@ class EncoderProvider extends ContainerAwareTrait implements EncoderProviderInte
      *
      * @param array $encoders List of encoders (default empty).
      */
-    public function __construct(array $encoders = array())
+    public function __construct(array $encoders = [])
     {
         $this->encoders = $encoders;
     }
