@@ -57,12 +57,12 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
 
             $soapEndpoint = 'amf_web_services_client.soap.'.$key;
             $container->setDefinition(
-                soapEndpoint,
+                $soapEndpoint,
                 new DefinitionDecorator('amf_web_services_client.soap.endpoint')
             )
                     ->setClass($value['class'])
-                    ->replaceArgument($soapService)
-                    ->replaceArgument(1, $soapService)
+                    ->replaceArgument(0, $soapService)
+                    ->replaceArgument(1, $soapWsseReference)
                     ->replaceArgument(3, $value['wsse']['enabled']);
         }
     }
