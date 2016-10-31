@@ -71,7 +71,7 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
                     ->replaceArgument(0, $wsse['wsse']['username'])
                     ->replaceArgument(1, $wsse['wsse']['password']);
 
-            return new Reference($restWsse);
+            return new Reference($soapWsse);
         }
 
         return null;
