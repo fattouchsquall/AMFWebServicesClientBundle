@@ -29,6 +29,11 @@ class Response
     protected $statusCode;
 
     /**
+     * @var string
+     */
+    protected $format;
+
+    /**
      * Constructor class.
      *
      * @param mixed   $content    The content of response.
