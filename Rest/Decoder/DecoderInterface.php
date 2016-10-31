@@ -24,7 +24,7 @@ interface DecoderInterface
      * @param string $data    The data to decode.
      * @param array  $context The context of decoding (default empty).
      *
-     * @return array
+     * @return array|null
      */
     public function decode($data, array $context = []);
 }

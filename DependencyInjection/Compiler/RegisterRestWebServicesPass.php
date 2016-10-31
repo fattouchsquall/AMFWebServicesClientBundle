@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Pass of compilation to register Rest webservices.
@@ -23,6 +24,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterRestWebServicesPass implements CompilerPassInterface
 {
+
     /**
      * Register rest webservices definition.
      *
@@ -35,48 +37,65 @@ class RegisterRestWebServicesPass implements CompilerPassInterface
         }
 
         $endpoints = $container->getParameter('amf_web_services_client.rest.endpoints');
-        foreach ($endpoints as $key => $value) {
-            $restWsseReference = null;
-            $restUrlReference  = null;
-            if (($value['wsse']['enabled'] === true)) {
-                $restWsse = 'amf_web_services_client.rest.wsse.'.$key;
-                $container
-                        ->setDefinition(
-                            $restWsse,
-                            new DefinitionDecorator('amf_web_services_client.rest.wsse')
-                        )
-                        ->replaceArgument(0, $value['wsse']['username'])
-                        ->replaceArgument(1, $value['wsse']['password'])
-                        ->replaceArgument(2, $value['wsse']['options']);
-
-                $restWsseReference = new Reference($restWsse);
-            }
-
-            if (($value['url']['enabled'] === true)) {
-                $restUrl = 'amf_web_services_client.rest.url.'.$key;
-                $container
-                        ->setDefinition(
-                            $restUrl,
-                            new DefinitionDecorator('amf_web_services_client.rest.url')
-                        )
-                        ->replaceArgument(0, $value['url']['hostname'])
-                        ->replaceArgument(1, $value['url']['scheme'])
-                        ->replaceArgument(2, $value['url']['port'])
-                        ->replaceArgument(3, $value['url']['query_delimiter']);
-
-                $restUrlReference = new Reference($restUrl);
-            }
-
+        foreach ($endpoints as $key => $endpoint) {
             $restEndpoint = 'amf_web_services_client.rest.'.$key;
-            $container->setDefinition(
-                $restEndpoint,
-                new DefinitionDecorator('amf_web_services_client.rest.endpoint')
-            )
-                    ->setClass($value['class'])
-                    ->replaceArgument(3, $restUrlReference)
-                    ->replaceArgument(4, $restWsseReference)
-                    ->replaceArgument(5, $value['request_format'])
-                    ->replaceArgument(6, $value['response_format']);
+            $container->setDefinition($restEndpoint, new DefinitionDecorator('amf_web_services_client.rest.endpoint'))
+                    ->setClass($endpoint['class'])
+                    ->replaceArgument(3, $this->addUrlDefinition($container, $key, $url))
+                    ->replaceArgument(4, $this->addWsseDefinition($container, $key, $wsse))
+                    ->replaceArgument(5, $endpoint['request_format'])
+                    ->replaceArgument(6, $endpoint['response_format']);
         }
+    }
+
+    /**
+     * Adds wsse defintion to container only if it's enabled..
+     *
+     * @param ContainerInterface $container
+     * @param string             $key
+     * @param array              $wsse
+     *
+     * @return Reference|null
+     */
+    private function addWsseDefinition(ContainerInterface $container, $key, array $wsse)
+    {
+        if (($wsse['enabled'] === true)) {
+            $restWsse = 'amf_web_services_client.rest.wsse.'.$key;
+            $container
+                    ->setDefinition($restWsse, new DefinitionDecorator('amf_web_services_client.rest.wsse'))
+                    ->replaceArgument(0, $wsse['username'])
+                    ->replaceArgument(1, $wsse['password'])
+                    ->replaceArgument(2, $wsse['options']);
+
+            return new Reference($restWsse);
+        }
+
+        return null;
+    }
+
+    /**
+     * Adds url defintion to container only if it's enabled.
+     *
+     * @param ContainerInterface $container
+     * @param string             $key
+     * @param array              $wsse
+     *
+     * @return Reference|null
+     */
+    private function addUrlDefinition(ContainerInterface $container, $key, $url)
+    {
+        if (($url['enabled'] === true)) {
+            $restUrl = 'amf_web_services_client.rest.url.'.$key;
+            $container
+                    ->setDefinition($restUrl, new DefinitionDecorator('amf_web_services_client.rest.url'))
+                    ->replaceArgument(0, $url['hostname'])
+                    ->replaceArgument(1, $url['scheme'])
+                    ->replaceArgument(2, $url['port'])
+                    ->replaceArgument(3, $url['query_delimiter']);
+
+            return new Reference($restUrl);
+        }
+
+        return null;
     }
 }
