@@ -7,6 +7,8 @@ This bundle provides a way to communicate with a multiple rest and soap webservi
 - Makes calls (GET, POST, PUT, DELETE) to ReST WebServices.
 
 [![Build Status](https://travis-ci.org/fattouchsquall/AMFWebServicesClientBundle.svg?branch=master)](https://travis-ci.org/fattouchsquall/AMFWebServicesClientBundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fattouchsquall/AMFWebServicesClientBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fattouchsquall/AMFWebServicesClientBundle/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/fattouchsquall/AMFWebServicesClientBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/fattouchsquall/AMFWebServicesClientBundle/?branch=master)
 [![Total Downloads](https://poser.pugx.org/amf/webservices-client-bundle/downloads)](https://packagist.org/packages/amf/webservices-client-bundle)
 [![Latest Stable Version](https://poser.pugx.org/amf/webservices-client-bundle/v/stable)](https://packagist.org/packages/amf/webservices-client-bundle)
 [![License](https://poser.pugx.org/amf/webservices-client-bundle/license)](https://packagist.org/packages/amf/webservices-client-bundle)
