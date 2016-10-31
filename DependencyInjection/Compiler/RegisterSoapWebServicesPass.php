@@ -48,7 +48,7 @@ class RegisterSoapWebServicesPass implements CompilerPassInterface
             )
                     ->setClass($endpoint['class'])
                     ->replaceArgument(0, $soapClient)
-                    ->replaceArgument(1, $this->addWsseDefinition($container, $key, $wsse))
+                    ->replaceArgument(1, $this->addWsseDefinition($container, $key, $endpoint['wsse']))
                     ->replaceArgument(3, $endpoint['wsse']['enabled']);
         }
     }
