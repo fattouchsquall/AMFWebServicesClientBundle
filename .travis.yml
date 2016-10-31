@@ -7,7 +7,7 @@ before_script:
     - composer install --dev
 
 script:
-    - phpunit --coverage-text --configuration phpunit.xml.dist
+    - phpunit --coverage-text
 
 notifications:
     email: amine.fattouch@gmail.com
