@@ -21,10 +21,10 @@ interface EncoderInterface
     /**
      * Encodes a string into array.
      *
-     * @param string $data    The data to encode.
-     * @param array  $context The context of encoding (default empty).
+     * @param mixed $data    The data to encode.
+     * @param array $context The context of encoding (default empty).
      *
-     * @return array
+     * @return scalar
      */
     public function encode($data, array $context = []);
 }

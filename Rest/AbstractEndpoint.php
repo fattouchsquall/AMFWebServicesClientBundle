@@ -57,22 +57,22 @@ abstract class AbstractEndpoint
     /**
      * Constructor class.
      *
-     * @param EventDispatcherInterface $dispatcher      The service of dispatcher (default null).
+     * @param EventDispatcherInterface $dispatcher      The service of dispatcher.
      * @param EncoderProviderInterface $encoderProvider Instance of provider for the encoder.
      * @param DecoderProviderInterface $decoderProvider Instance of provider for the decoder.
-     * @param Url                      $url             The url component for rest API (default null).
-     * @param Wsse                     $wsse            The generator of wsse header (default null).
-     * @param boolean                  $requestFormat   The format of request (default null).
-     * @param boolean                  $responseFormat  The format of response (default null).
+     * @param Url                      $url             The url component for rest API.
+     * @param Wsse                     $wsse            The generator of wsse header.
+     * @param string                   $requestFormat   The format of request (default json).
+     * @param string                   $responseFormat  The format of response (default json).
      */
     public function __construct(
-        EventDispatcherInterface $dispatcher = null,
-        EncoderProviderInterface $encoderProvider = null,
-        DecoderProviderInterface $decoderProvider = null,
+        EventDispatcherInterface $dispatcher,
+        EncoderProviderInterface $encoderProvider,
+        DecoderProviderInterface $decoderProvider,
         Url $url = null,
         Wsse $wsse = null,
-        $requestFormat = null,
-        $responseFormat = null
+        $requestFormat = 'json',
+        $responseFormat = 'json'
     ) {
         $this->dispatcher = $dispatcher;
         $this->encoder    = $encoderProvider->getEncoder($requestFormat);
@@ -115,8 +115,8 @@ abstract class AbstractEndpoint
      * Prepares a request.
      *
      * @param string $actionPath The path of action.
-     * @param string $method     The http method.
-     * @param array  $data       The parameters of action.
+     * @param array  $query      The query of url.
+     * @param array  $request    The body post of request.
      * @param array  $server     The server parameters.
      *
      * @return Request
